@@ -3,9 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDCI 338</title>
+    <title>EDCI 338 | Andy Hu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a8a 50%, #3d7ab8 100%);
+            color: white;
+            padding: 60px 20px 50px;
+            text-align: center;
+        }
+
+        .header .course-label {
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            opacity: 0.8;
+            margin-bottom: 14px;
+        }
+
+        .header h1 {
+            font-size: 2.4em;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 1em;
+            font-weight: 400;
+            opacity: 0.85;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        .section-label {
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 28px 30px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: box-shadow 0.2s, transform 0.15s;
+            border: 1px solid #e8e8e8;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+
+        .card-icon.blue { background: #e8f0fa; }
+        .card-icon.purple { background: #f0e8fa; }
+        .card-icon.amber { background: #fef6e0; }
+        .card-icon.green { background: #e8f5ed; }
+
+        .card-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .card-desc {
+            font-size: 0.82em;
+            color: #777;
+            font-weight: 400;
+        }
+
+        .card-arrow {
+            font-size: 1.2em;
+            color: #ccc;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .card:hover .card-arrow {
+            color: #2d5a8a;
+            transform: translateX(3px);
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.65em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+            position: relative;
+            top: -1px;
+        }
+
+        .badge.done { background: #e8f5ed; color: #1a7a3a; }
+        .badge.wip { background: #fef6e0; color: #b8860b; }
+        .badge.upcoming { background: #f0f0f0; color: #888; }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.78em;
+            color: #aaa;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.7em; }
+            .card { padding: 20px; }
+            .card-icon { width: 40px; height: 40px; font-size: 1.1em; }
+        }
+    </style>
 </head>
 <body>
-    <h1>EDCI 338</h1>
+
+    <div class="header">
+        <div class="course-label">EDCI 338 &mdash; Social Media &amp; Personalized Learning</div>
+        <h1>Andy Hu</h1>
+        <div class="subtitle">University of Victoria &middot; Spring 2026</div>
+    </div>
+
+    <div class="container">
+
+        <div class="section-label">Blog Posts (35%)</div>
+        <div class="cards">
+            <a class="card" href="blog/post5/">
+                <div class="card-left">
+                    <div class="card-icon blue">&#9997;</div>
+                    <div>
+                        <div class="card-title">Blog #5 <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">PLN &amp; Education</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+            <a class="card" href="blog/post6/">
+                <div class="card-left">
+                    <div class="card-icon blue">&#9997;</div>
+                    <div>
+                        <div class="card-title">Blog #6 <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Professional PLN Reflection</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+            <a class="card" href="blog/post7/">
+                <div class="card-left">
+                    <div class="card-icon blue">&#9997;</div>
+                    <div>
+                        <div class="card-title">Blog #7 <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">PLN &amp; the Evolving Internet</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+            <a class="card" href="blog/post8/">
+                <div class="card-left">
+                    <div class="card-icon blue">&#9997;</div>
+                    <div>
+                        <div class="card-title">Blog #8 <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">AI and Social Media</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+            <a class="card" href="blog/post9/">
+                <div class="card-left">
+                    <div class="card-icon blue">&#9997;</div>
+                    <div>
+                        <div class="card-title">Blog #9 <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Privacy Compliance (PIPEDA)</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+        </div>
+
+        <div class="section-label">End of Term</div>
+        <div class="cards">
+            <a class="card" href="peer-audit/">
+                <div class="card-left">
+                    <div class="card-icon purple">&#128269;</div>
+                    <div>
+                        <div class="card-title">Peer Blog Audit <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Constructive review of a classmate's blog post</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+            <a class="card" href="blog-summation/">
+                <div class="card-left">
+                    <div class="card-icon amber">&#128214;</div>
+                    <div>
+                        <div class="card-title">Blog Summation <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Final comprehensive learning reflection</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+            <a class="card" href="group-project/">
+                <div class="card-left">
+                    <div class="card-icon green">&#127760;</div>
+                    <div>
+                        <div class="card-title">Final Group Project <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">PLN walkthrough &mdash; platforms, practices, and themes</div>
+                    </div>
+                </div>
+                <div class="card-arrow">&rarr;</div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="footer">EDCI 338 &middot; University of Victoria &middot; 2026</div>
+
 </body>
 </html>
