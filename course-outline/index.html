@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Outline | EDCI 338</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text: #111827;
+            --text-secondary: #6b7280;
+            --accent: #4f46e5;
+            --accent-light: #e0e7ff;
+            --hero-1: #1e1b4b;
+            --hero-2: #4f46e5;
+            --hero-3: #818cf8;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --radius: 16px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1117;
+                --surface: #1a1d27;
+                --border: #2a2d3a;
+                --text: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --accent-light: #1e1b4b;
+                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .topbar {
+            position: relative;
+            overflow: hidden;
+            padding: 32px 24px 28px;
+            color: white;
+        }
+
+        .topbar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .topbar-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: white; }
+
+        .topbar-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255,255,255,0.25);
+        }
+
+        .topbar-title {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .topbar-meta {
+            font-size: 0.8em;
+            opacity: 0.75;
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.82em;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.22);
+        }
+
+        .viewer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .pdf-container {
+            flex: 1;
+            min-height: 80vh;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .pdf-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 80vh;
+            border: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <div class="topbar-content">
+            <div class="topbar-left">
+                <a class="back-link" href="../">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+                    Home
+                </a>
+                <div class="topbar-divider"></div>
+                <div>
+                    <div class="topbar-title">Course Outline</div>
+                    <div class="topbar-meta">EDCI 338 A01 &mdash; Jesse Miller &mdash; Spring 2026</div>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <a class="btn btn-outline" href="../course-outline.pdf" download>
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download PDF
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="viewer">
+        <div class="pdf-container">
+            <iframe src="../course-outline.pdf" title="EDCI 338 Course Outline"></iframe>
+        </div>
+    </div>
+
+    <div class="footer">
+        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
+        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+    </div>
+
+</body>
+</html>

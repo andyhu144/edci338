@@ -5,262 +5,654 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDCI 338 | Andy Hu</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text: #111827;
+            --text-secondary: #6b7280;
+            --accent: #4f46e5;
+            --accent-light: #e0e7ff;
+            --accent-dark: #3730a3;
+            --hero-1: #1e1b4b;
+            --hero-2: #4f46e5;
+            --hero-3: #818cf8;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1117;
+                --surface: #1a1d27;
+                --border: #2a2d3a;
+                --text: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --accent-light: #1e1b4b;
+                --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+                --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
+            }
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            color: #1a1a1a;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .header {
-            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a8a 50%, #3d7ab8 100%);
-            color: white;
-            padding: 60px 20px 50px;
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 80px 24px 70px;
             text-align: center;
+            color: white;
         }
 
-        .header .course-label {
-            font-size: 0.75em;
-            font-weight: 600;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 25% 40%, rgba(255,255,255,0.07) 0%, transparent 50%),
+                radial-gradient(circle at 75% 25%, rgba(255,255,255,0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.04) 0%, transparent 45%);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 0.7em;
+            font-weight: 700;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInDown 0.6s ease both;
+        }
+
+        .hero h1 {
+            font-size: 2.6em;
+            font-weight: 600;
+            line-height: 1.15;
+            margin-bottom: 14px;
+            letter-spacing: -0.3px;
+            animation: fadeInDown 0.6s ease 0.1s both;
+        }
+
+        .hero-sub {
+            font-size: 1.15em;
+            font-weight: 400;
+            opacity: 0.85;
+            animation: fadeInDown 0.6s ease 0.2s both;
+        }
+
+        .hero-meta {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            animation: fadeInDown 0.6s ease 0.3s both;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
             opacity: 0.8;
+        }
+
+        /* ── Progress Bar ── */
+        .progress-section {
+            max-width: 960px;
+            margin: -30px auto 0;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 0.5s ease 0.4s both;
+        }
+
+        .progress-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 14px;
         }
 
-        .header h1 {
-            font-size: 2.4em;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .header .subtitle {
-            font-size: 1em;
-            font-weight: 400;
-            opacity: 0.85;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 50px 20px 80px;
-        }
-
-        .section-label {
-            font-size: 0.7em;
+        .progress-label {
+            font-size: 0.8em;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #888;
-            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
         }
 
-        .cards {
+        .progress-pct {
+            font-size: 1.4em;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hero-1), var(--hero-2), var(--hero-3));
+            border-radius: 100px;
+            width: 0%;
+            animation: fillProgress 1.2s ease 0.8s forwards;
+        }
+
+        @keyframes fillProgress {
+            to { width: var(--progress); }
+        }
+
+        .progress-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .progress-stat {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        .progress-stat strong {
+            color: var(--text);
+        }
+
+        /* ── Main Content ── */
+        .main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: 0.72em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--text-secondary);
+        }
+
+        .section-weight {
+            font-size: 0.72em;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+
+        /* ── Cards ── */
+        .card-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 50px;
+            gap: 12px;
+        }
+
+        .card-grid.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .card-grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .card {
-            background: white;
-            border-radius: 10px;
-            padding: 28px 30px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 24px;
             text-decoration: none;
             color: inherit;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            transition: box-shadow 0.2s, transform 0.15s;
-            border: 1px solid #e8e8e8;
+            gap: 16px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.4s ease both;
+            cursor: pointer;
         }
 
         .card:hover {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md), 0 0 0 1px var(--accent);
             transform: translateY(-2px);
         }
 
-        .card-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
+        .card-num {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3em;
+            font-weight: 800;
+            font-size: 0.95em;
             flex-shrink: 0;
+            transition: transform 0.2s;
         }
 
-        .card-icon.blue { background: #e8f0fa; }
-        .card-icon.purple { background: #f0e8fa; }
-        .card-icon.amber { background: #fef6e0; }
-        .card-icon.green { background: #e8f5ed; }
+        .card:hover .card-num { transform: scale(1.08); }
+
+        .card-num.indigo { background: #e0e7ff; color: #3730a3; }
+        .card-num.violet { background: #ede9fe; color: #5b21b6; }
+        .card-num.rose { background: #ffe4e6; color: #9f1239; }
+        .card-num.amber { background: #fef3c7; color: #92400e; }
+        .card-num.emerald { background: #d1fae5; color: #065f46; }
+        .card-num.sky { background: #e0f2fe; color: #075985; }
+        .card-num.slate { background: #f1f5f9; color: #334155; }
+
+        .card-body { flex: 1; min-width: 0; }
 
         .card-title {
-            font-size: 1.05em;
+            font-size: 0.95em;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .card-desc {
-            font-size: 0.82em;
-            color: #777;
-            font-weight: 400;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .card-meta {
+            font-size: 0.72em;
+            color: var(--text-secondary);
+            margin-top: 4px;
         }
 
         .card-arrow {
-            font-size: 1.2em;
-            color: #ccc;
-            transition: color 0.2s, transform 0.2s;
+            color: var(--border);
+            transition: all 0.2s;
+            flex-shrink: 0;
+            font-size: 1.1em;
         }
 
         .card:hover .card-arrow {
-            color: #2d5a8a;
-            transform: translateX(3px);
+            color: var(--accent);
+            transform: translateX(4px);
         }
 
+        /* ── Badges ── */
         .badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             font-size: 0.65em;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-left: 10px;
-            position: relative;
-            top: -1px;
+            letter-spacing: 0.8px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            white-space: nowrap;
         }
 
-        .badge.done { background: #e8f5ed; color: #1a7a3a; }
-        .badge.wip { background: #fef6e0; color: #b8860b; }
-        .badge.upcoming { background: #f0f0f0; color: #888; }
+        .badge.done { background: #d1fae5; color: #065f46; }
+        .badge.wip { background: #fef3c7; color: #92400e; }
+        .badge.upcoming { background: #f1f5f9; color: #64748b; }
 
+        /* ── Timeline connector for blog posts ── */
+        .timeline-grid {
+            position: relative;
+        }
+
+        .timeline-grid::before {
+            content: '';
+            position: absolute;
+            left: 44px;
+            top: 30px;
+            bottom: 30px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), var(--border));
+            border-radius: 2px;
+            z-index: 0;
+        }
+
+        .timeline-grid .card {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Footer ── */
         .footer {
             text-align: center;
-            padding: 30px 20px;
+            padding: 32px 24px;
             font-size: 0.78em;
-            color: #aaa;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
         }
 
-        @media (max-width: 600px) {
-            .header h1 { font-size: 1.7em; }
-            .card { padding: 20px; }
-            .card-icon { width: 40px; height: 40px; font-size: 1.1em; }
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.08s; }
+        .card:nth-child(3) { animation-delay: 0.11s; }
+        .card:nth-child(4) { animation-delay: 0.14s; }
+        .card:nth-child(5) { animation-delay: 0.17s; }
+        .card:nth-child(6) { animation-delay: 0.20s; }
+        .card:nth-child(7) { animation-delay: 0.23s; }
+        .card:nth-child(8) { animation-delay: 0.26s; }
+        .card:nth-child(9) { animation-delay: 0.29s; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .hero { padding: 60px 20px 55px; }
+            .hero h1 { font-size: 1.8em; }
+            .hero-meta { gap: 12px; }
+            .card-grid.cols-2, .card-grid.cols-3 { grid-template-columns: 1fr; }
+            .progress-stats { gap: 12px; }
+            .timeline-grid::before { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="course-label">EDCI 338 &mdash; Social Media &amp; Personalized Learning</div>
-        <h1>Andy Hu</h1>
-        <div class="subtitle">University of Victoria &middot; Spring 2026</div>
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">EDCI 338</div>
+            <h1>Social Media &amp; Personalized Learning</h1>
+            <div class="hero-sub">Building personal learning networks, digital identity, and media literacy</div>
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Andy Hu
+                </div>
+                <div class="hero-meta-item">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    University of Victoria
+                </div>
+                <div class="hero-meta-item">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Spring 2026
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
+    <!-- Progress -->
+    <div class="progress-section">
+        <div class="progress-card">
+            <div class="progress-header">
+                <span class="progress-label">Course Progress</span>
+                <span class="progress-pct">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="--progress: 0%"></div>
+            </div>
+            <div class="progress-stats">
+                <div class="progress-stat"><strong>0</strong> of 13 assignments complete</div>
+                <div class="progress-stat"><strong>3</strong> categories &middot; <strong>100%</strong> total weight</div>
+            </div>
+        </div>
+    </div>
 
-        <div class="section-label">Blog Posts (35%)</div>
-        <div class="cards">
-            <a class="card" href="blog/post5/">
-                <div class="card-left">
-                    <div class="card-icon blue">&#9997;</div>
-                    <div>
-                        <div class="card-title">Blog #5 <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">PLN &amp; Education</div>
+    <div class="main">
+
+        <!-- Blog Posts -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">Blog Posts</span>
+                <span class="section-weight">35%</span>
+            </div>
+            <div class="card-grid timeline-grid">
+                <a class="card" href="blog/post1/">
+                    <div class="card-num indigo">01</div>
+                    <div class="card-body">
+                        <div class="card-title">PLN &amp; Digital Identity <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Networked publics, digital identity, and professional presence</div>
+                        <div class="card-meta">Week 2 &middot; Jan 12</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
-            <a class="card" href="blog/post6/">
-                <div class="card-left">
-                    <div class="card-icon blue">&#9997;</div>
-                    <div>
-                        <div class="card-title">Blog #6 <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">Professional PLN Reflection</div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post2/">
+                    <div class="card-num indigo">02</div>
+                    <div class="card-body">
+                        <div class="card-title">Visitor &amp; Resident Mapping <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">V&amp;R framework, personal vs. professional digital identity</div>
+                        <div class="card-meta">Week 3 &middot; Jan 19</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
-            <a class="card" href="blog/post7/">
-                <div class="card-left">
-                    <div class="card-icon blue">&#9997;</div>
-                    <div>
-                        <div class="card-title">Blog #7 <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">PLN &amp; the Evolving Internet</div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post3/">
+                    <div class="card-num indigo">03</div>
+                    <div class="card-body">
+                        <div class="card-title">Inclusion &amp; Community <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Diversity in PLNs, inclusive messaging, community engagement</div>
+                        <div class="card-meta">Week 4 &middot; Jan 26</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
-            <a class="card" href="blog/post8/">
-                <div class="card-left">
-                    <div class="card-icon blue">&#9997;</div>
-                    <div>
-                        <div class="card-title">Blog #8 <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">AI and Social Media</div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post4/">
+                    <div class="card-num indigo">04</div>
+                    <div class="card-body">
+                        <div class="card-title">Media Literacy &amp; Public Discourse <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Factual consensus, misinformation, and public audience engagement</div>
+                        <div class="card-meta">Week 5 &middot; Feb 2</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
-            <a class="card" href="blog/post9/">
-                <div class="card-left">
-                    <div class="card-icon blue">&#9997;</div>
-                    <div>
-                        <div class="card-title">Blog #9 <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">Privacy Compliance (PIPEDA)</div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post5/">
+                    <div class="card-num violet">05</div>
+                    <div class="card-body">
+                        <div class="card-title">PLN &amp; Education <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Social media in education, professional discourse, vulnerable sectors</div>
+                        <div class="card-meta">Week 7 &middot; Feb 16</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post6/">
+                    <div class="card-num violet">06</div>
+                    <div class="card-body">
+                        <div class="card-title">Professional PLN Reflection <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">PLN development, social media experience, perspective shifts</div>
+                        <div class="card-meta">Week 8 &middot; Feb 23</div>
+                    </div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post7/">
+                    <div class="card-num violet">07</div>
+                    <div class="card-body">
+                        <div class="card-title">PLN &amp; the Evolving Internet <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">AI influence on equity, accessibility, and professional growth</div>
+                        <div class="card-meta">Week 9 &middot; Mar 2</div>
+                    </div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post8/">
+                    <div class="card-num rose">08</div>
+                    <div class="card-body">
+                        <div class="card-title">AI &amp; Social Media <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">AI-driven misinformation, digital citizenship in Canadian education</div>
+                        <div class="card-meta">Week 10 &middot; Mar 9</div>
+                    </div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog/post9/">
+                    <div class="card-num rose">09</div>
+                    <div class="card-body">
+                        <div class="card-title">Privacy Compliance (PIPEDA) <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Canadian privacy regulations, data harvesting, and ethical PLN practices</div>
+                        <div class="card-meta">Week 11 &middot; Mar 16</div>
+                    </div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+            </div>
         </div>
 
-        <div class="section-label">End of Term</div>
-        <div class="cards">
-            <a class="card" href="peer-audit/">
-                <div class="card-left">
-                    <div class="card-icon purple">&#128269;</div>
-                    <div>
+        <!-- PLN Participation Analysis -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">PLN Participation Analysis</span>
+                <span class="section-weight">25%</span>
+            </div>
+            <div class="card-grid">
+                <a class="card" href="pln-analysis/">
+                    <div class="card-num sky">PA</div>
+                    <div class="card-body">
+                        <div class="card-title">Participation Analysis <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">Analysis of social platform use, engagement metrics, and PLN effectiveness</div>
+                        <div class="card-meta">25% &middot; Due Mar 28</div>
+                    </div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- End of Term -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">End of Term</span>
+            </div>
+            <div class="card-grid cols-2">
+                <a class="card" href="peer-audit/">
+                    <div class="card-num slate">PA</div>
+                    <div class="card-body">
                         <div class="card-title">Peer Blog Audit <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">Constructive review of a classmate's blog post</div>
+                        <div class="card-desc">Constructive review and feedback on a classmate's blog</div>
+                        <div class="card-meta">Week 12 &middot; Mar 23</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
-            <a class="card" href="blog-summation/">
-                <div class="card-left">
-                    <div class="card-icon amber">&#128214;</div>
-                    <div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+                <a class="card" href="blog-summation/">
+                    <div class="card-num amber">BS</div>
+                    <div class="card-body">
                         <div class="card-title">Blog Summation <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">Final comprehensive learning reflection</div>
+                        <div class="card-desc">Final comprehensive learning reflection and growth summary</div>
+                        <div class="card-meta">Week 13 &middot; Mar 30</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
-            <a class="card" href="group-project/">
-                <div class="card-left">
-                    <div class="card-icon green">&#127760;</div>
-                    <div>
-                        <div class="card-title">Final Group Project <span class="badge upcoming">Upcoming</span></div>
-                        <div class="card-desc">PLN walkthrough &mdash; platforms, practices, and themes</div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Final Group Project -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">Final Group Project</span>
+                <span class="section-weight">40%</span>
+            </div>
+            <div class="card-grid">
+                <a class="card" href="group-project/">
+                    <div class="card-num emerald">FP</div>
+                    <div class="card-body">
+                        <div class="card-title">PLN Walkthrough <span class="badge upcoming">Upcoming</span></div>
+                        <div class="card-desc">10&ndash;15 min group media project covering platforms, practices, privacy, and professional PLN development</div>
+                        <div class="card-meta">40% &middot; Due Mar 28</div>
                     </div>
-                </div>
-                <div class="card-arrow">&rarr;</div>
-            </a>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Course Resources -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">Course Resources</span>
+            </div>
+            <div class="card-grid">
+                <a class="card" href="course-outline/">
+                    <div class="card-num" style="background:#eef2ff;color:var(--text-secondary);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">Course Outline</div>
+                        <div class="card-desc">EDCI 338 A01 &mdash; Jesse Miller &mdash; Spring 2026</div>
+                        <div class="card-meta">PDF</div>
+                    </div>
+                    <div class="card-arrow">&rarr;</div>
+                </a>
+            </div>
         </div>
 
     </div>
 
-    <div class="footer">EDCI 338 &middot; University of Victoria &middot; 2026</div>
+    <div class="footer">
+        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
+        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+    </div>
 
 </body>
 </html>
