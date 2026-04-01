@@ -3,9 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDCI 338</title>
+    <title>Blog Post #1 — PLN & Digital Identity | EDCI 338</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        :root {
+            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
+            --text: #111827; --text-secondary: #6b7280;
+            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
+            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
+                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
+                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+            }
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
+        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
+        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
+        .back-link:hover { color: white; }
+        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
+        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
+        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
+        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
+        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
+        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
+        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
+        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
+        .footer a { color: var(--accent); text-decoration: none; }
+    </style>
 </head>
 <body>
-    <h1>EDCI 338</h1>
+    <div class="topbar">
+        <div class="topbar-content">
+            <a class="back-link" href="../../">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+                Home
+            </a>
+            <div class="topbar-title">Blog Post #1 — PLN & Digital Identity<span class="badge">35%</span></div>
+            <div class="topbar-meta">Week 2</div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="placeholder">
+            <div class="placeholder-icon">&#x1F4DD;</div>
+            <h2>Coming Soon</h2>
+            <p>Personal Learning Networks and digital identity</p>
+        </div>
+    </div>
+    <div class="footer">
+        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
+        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+    </div>
 </body>
 </html>
