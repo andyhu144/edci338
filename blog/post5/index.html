@@ -3,64 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post #5 — PLN & Education | EDCI 338</title>
+    <title>PLN & Education | EDCI 338 — Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
-        .footer a { color: var(--accent); text-decoration: none; }
+        :root{--bg:#f8f9fa;--surface:#fff;--border:#e8eaed;--text:#1a1a2e;--text-secondary:#5f6368;--accent:#4f46e5;--accent-soft:#e0e7ff;--accent-dark:#3730a3;--hero-1:#1e1b4b;--hero-2:#4f46e5;--hero-3:#818cf8;--sans:'Inter',-apple-system,system-ui,sans-serif;--shadow-sm:0 1px 4px rgba(0,0,0,.04);--shadow-md:0 4px 20px rgba(0,0,0,.06);--radius:20px}@media(prefers-color-scheme:dark){:root{--bg:#0c0e14;--surface:#161820;--border:#252830;--text:#e8eaed;--text-secondary:#9aa0a6;--accent-soft:#1e1b4b;--shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 20px rgba(0,0,0,.3)}}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1000;width:0%;transition:width .1s linear}.sticky-nav{position:fixed;top:24px;right:24px;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-md);font-size:.75em;opacity:0;transform:translateY(-8px);transition:all .3s ease;pointer-events:none}.sticky-nav.visible{opacity:1;transform:translateY(0);pointer-events:all}.sticky-nav-title{font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-size:.85em;color:var(--text-secondary);margin-bottom:10px}.sticky-nav a{display:block;padding:5px 0;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s;border-left:2px solid transparent;padding-left:10px}.sticky-nav a:hover{color:var(--text)}.sticky-nav a.active{color:var(--accent);border-left-color:var(--accent)}.hero{position:relative;overflow:hidden;padding:100px 24px 88px;color:#fff}.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,var(--hero-1) 0%,var(--hero-2) 55%,var(--hero-3) 100%);background-size:200% 200%;animation:drift 10s ease infinite}.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(255,255,255,.07) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(255,255,255,.04) 0%,transparent 45%)}@keyframes drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto}.hero-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.82em;font-weight:500;margin-bottom:48px;transition:color .2s}.hero-back:hover{color:#fff}.hero h1{font-size:3em;font-weight:600;line-height:1.1;margin-bottom:40px}.hero-footer{display:flex;align-items:center;gap:16px;font-size:.8em;opacity:.5}.hero-footer .pill{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:5px 14px;border-radius:100px;font-weight:500}.hero-footer .dot{width:3px;height:3px;border-radius:50%;background:currentColor}.content{max-width:1080px;margin:0 auto;padding:64px 24px 80px}.section-2col{display:grid;grid-template-columns:240px 1fr;gap:48px}.section-aside{position:sticky;top:100px;align-self:start}.section-aside .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.section-aside .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}.section-aside h2{font-size:1.2em;font-weight:600;line-height:1.3;color:var(--text);margin:0}.section-body{display:flex;flex-direction:column;gap:16px}.island{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}.island p{margin-bottom:14px;font-size:.93em;color:var(--text-secondary);line-height:1.8}.island p:last-child{margin-bottom:0}p{font-size:.93em;color:var(--text-secondary);line-height:1.8}.divider{max-width:1080px;margin:56px auto;padding:0 24px}.divider-line{height:1px;background:var(--border)}.ref-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow-sm)}.ref-list h3{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);margin-bottom:16px}.ref-list p{font-size:.82em;color:var(--text-secondary);margin-bottom:8px;line-height:1.6}.ref-list a{color:var(--accent);text-decoration:none}.footer{text-align:center;padding:40px 24px;font-size:.75em;color:var(--text-secondary);border-top:1px solid var(--border)}.footer a{color:var(--accent);text-decoration:none}
+        .platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}.plat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 20px;text-align:center;box-shadow:var(--shadow-sm);transition:all .25s}.plat-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-md)}.plat-card .pl-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}.plat-card strong{display:block;font-size:.85em;margin-bottom:4px;color:var(--text)}.plat-card span{font-size:.78em;color:var(--text-secondary);line-height:1.5}
+        @media(max-width:900px){.section-2col{grid-template-columns:1fr;gap:24px}.section-aside{position:static}.platform-grid{grid-template-columns:1fr}.sticky-nav{display:none}}@media(max-width:600px){.hero h1{font-size:2em}.hero{padding:64px 20px 56px}.content{padding:48px 20px 60px}.island{padding:24px 20px}}
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Blog Post #5 — PLN & Education<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 7</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="sticky-nav" id="stickyNav"><div class="sticky-nav-title">On this page</div><a href="#discourse">Discourse</a><a href="#platforms">Platforms</a><a href="#vulnerable">Vulnerable Sectors</a><a href="#references">References</a></nav>
+
+<div class="hero"><div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+    <a class="hero-back" href="../../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+    <h1>PLN &amp; Education</h1>
+    <div class="hero-footer"><span>Andy Hu</span><span class="dot"></span><span>February 2026</span><span class="dot"></span><span class="pill">Blog Post #5 &middot; Week 7</span></div>
+</div></div>
+
+<div class="content">
+    <div class="section-2col" id="discourse" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <span class="section-tag">Education Discourse</span>
+            <h2>How PLNs Shape the Conversation</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>The TEDx talk on "Education in a Connected Culture" makes a point that I think a lot of people in education resist: youth are not losing their ability to communicate. They are communicating in ways that older generations do not recognize as valid. Memes, GIFs, six-second videos, 280-character thoughts — these are not degraded versions of "real" language. They are new forms of expression with their own rules, their own grammar, and their own social functions.</p>
+                <p>The talk references Marshall McLuhan — "the medium is the message" — and applies it directly to how different social media platforms emphasize different communicative traits. What you can say in a tweet is fundamentally different from what you can say in a blog post, not because of skill differences but because the medium itself shapes the message. That is directly relevant to how educators create discourse. The platform you choose for a class discussion is not a neutral container. It actively shapes what kind of conversations are possible.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>Couros (2010) makes the case that Personal Learning Networks are essential tools for open and social learning. Educators who build PLNs are not just consuming information — they are participating in the creation and curation of professional knowledge. A teacher who follows researchers, other practitioners, and policy makers on Twitter is building a real-time, self-curating professional development resource that no conference or PD day can replicate.</p>
+                <p>The flip side is that PLNs can also hinder discourse. Social media rewards confident, shareable statements over nuanced, qualified ones. An educator who shares a complex take on curriculum reform gets less engagement than one who posts a provocative hot take. The algorithm does not care about accuracy or nuance. It cares about engagement. That creates an incentive structure where the most visible ideas are not necessarily the most thoughtful ones.</p>
+            </div>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F393;</div>
-            <h2>Coming Soon</h2>
-            <p>PLN in professional and educational capacity</p>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div id="platforms" data-aos="fade-up">
+        <div class="section-full-header">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <div class="header-text">
+                <span class="section-tag">Platform Assessment</span>
+                <h2>Which Platforms Work for Education?</h2>
+            </div>
+        </div>
+
+        <div class="platform-grid">
+            <div class="plat-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="pl-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <strong>Mattermost / Slack</strong>
+                <span>Channel-based discussion with persistence. Best for structured, ongoing professional discourse.</span>
+            </div>
+            <div class="plat-card" data-aos="fade-up" data-aos-delay="40">
+                <div class="pl-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+                <strong>WordPress / Blogs</strong>
+                <span>Long-form reflection with embedded media. Best for depth, personal voice, and portfolio building.</span>
+            </div>
+            <div class="plat-card" data-aos="fade-up" data-aos-delay="80">
+                <div class="pl-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+                <strong>YouTube</strong>
+                <span>Video-based teaching and demonstration. Best for visual concepts, accessibility through captions.</span>
+            </div>
+            <div class="plat-card" data-aos="fade-up" data-aos-delay="120">
+                <div class="pl-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+                <strong>LinkedIn</strong>
+                <span>Professional networking and industry discourse. Best for connecting with practitioners and researchers.</span>
+            </div>
+            <div class="plat-card" data-aos="fade-up" data-aos-delay="160">
+                <div class="pl-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+                <strong>BlueSky / Threads</strong>
+                <span>Short-form, real-time discussion. Best for quick sharing and emerging conversations.</span>
+            </div>
+            <div class="plat-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="pl-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                <strong>GitHub</strong>
+                <span>Collaborative building and code-based learning. Best for technical education and open-source pedagogy.</span>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50">
+            <p>From my perspective in software, the most effective educational platforms are the ones where learning happens through doing — not through watching. GitHub, Mattermost, and blogs all share a common trait: they require the learner to produce something. A commit, a message, a post. That production is what makes them educational. The passive consumption platforms — scrolling Instagram, watching YouTube without engaging — can deliver content, but they do not reliably produce learning. The medium shapes the behavior, and the behavior determines whether learning happens.</p>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="vulnerable" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="section-tag">Duty of Care</span>
+            <h2>Social Media &amp; Vulnerable Sectors</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>The question of social media in education settings that serve vulnerable populations — children, at-risk youth, people with disabilities — is where the optimism about PLNs runs into hard constraints. An educator working with minors cannot use social media the same way a tech professional can. There are privacy laws, institutional policies, duty-of-care obligations, and the basic fact that young people cannot meaningfully consent to having their learning data shared on commercial platforms.</p>
+                <p>This does not mean social media is off limits in these settings. It means the educator has a professional responsibility to choose platforms deliberately, to understand how data flows through them, and to maintain clear boundaries between their professional presence and their students' privacy. That is a design problem — the same kind of problem I deal with when building software that handles user data. You do not avoid the technology. You use it responsibly, with full awareness of who is at risk if you get it wrong.</p>
+            </div>
+        </div>
     </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="ref-list" id="references" data-aos="fade-up">
+        <h3>References</h3>
+        <p>Couros, A. (2010). Developing personal learning networks for open and social learning. In G. Veletsianos (Ed.), <em>Emerging technologies in distance education</em> (pp. 109–128). AU Press. <a href="https://www.aupress.ca/app/uploads/120177_99Z_Veletsianos_2010-Emerging_Technologies_in_Distance_Education.pdf">aupress.ca</a></p>
+        <p>Education in a connected culture [Video]. (2021). YouTube. <a href="https://www.youtube.com/watch?v=ZteEZbAtsNI">youtube.com</a></p>
+        <p>McLuhan, M. (1964). <em>Understanding media: The extensions of man</em>. McGraw-Hill.</p>
+    </div>
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({once:true,offset:60});window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});const nav=document.getElementById('stickyNav'),sections=document.querySelectorAll('[id]'),navLinks=nav.querySelectorAll('a');window.addEventListener('scroll',()=>{nav.classList.toggle('visible',window.scrollY>500);let c='';sections.forEach(s=>{if(s.id&&window.scrollY>=s.offsetTop-200)c=s.id});navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})})</script>
 </body>
 </html>

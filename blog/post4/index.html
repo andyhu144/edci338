@@ -3,64 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post #4 — Media Literacy | EDCI 338</title>
+    <title>Media Literacy & Public Discourse | EDCI 338 — Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
-        .footer a { color: var(--accent); text-decoration: none; }
+        :root{--bg:#f8f9fa;--surface:#fff;--border:#e8eaed;--text:#1a1a2e;--text-secondary:#5f6368;--accent:#4f46e5;--accent-soft:#e0e7ff;--accent-dark:#3730a3;--hero-1:#1e1b4b;--hero-2:#4f46e5;--hero-3:#818cf8;--sans:'Inter',-apple-system,system-ui,sans-serif;--shadow-sm:0 1px 4px rgba(0,0,0,.04);--shadow-md:0 4px 20px rgba(0,0,0,.06);--radius:20px}@media(prefers-color-scheme:dark){:root{--bg:#0c0e14;--surface:#161820;--border:#252830;--text:#e8eaed;--text-secondary:#9aa0a6;--accent-soft:#1e1b4b;--shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 20px rgba(0,0,0,.3)}}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1000;width:0%;transition:width .1s linear}.sticky-nav{position:fixed;top:24px;right:24px;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-md);font-size:.75em;opacity:0;transform:translateY(-8px);transition:all .3s ease;pointer-events:none}.sticky-nav.visible{opacity:1;transform:translateY(0);pointer-events:all}.sticky-nav-title{font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-size:.85em;color:var(--text-secondary);margin-bottom:10px}.sticky-nav a{display:block;padding:5px 0;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s;border-left:2px solid transparent;padding-left:10px}.sticky-nav a:hover{color:var(--text)}.sticky-nav a.active{color:var(--accent);border-left-color:var(--accent)}.hero{position:relative;overflow:hidden;padding:100px 24px 88px;color:#fff}.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,var(--hero-1) 0%,var(--hero-2) 55%,var(--hero-3) 100%);background-size:200% 200%;animation:drift 10s ease infinite}.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(255,255,255,.07) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(255,255,255,.04) 0%,transparent 45%)}@keyframes drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto}.hero-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.82em;font-weight:500;margin-bottom:48px;transition:color .2s}.hero-back:hover{color:#fff}.hero h1{font-size:3em;font-weight:600;line-height:1.1;margin-bottom:40px}.hero-footer{display:flex;align-items:center;gap:16px;font-size:.8em;opacity:.5}.hero-footer .pill{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:5px 14px;border-radius:100px;font-weight:500}.hero-footer .dot{width:3px;height:3px;border-radius:50%;background:currentColor}.content{max-width:1080px;margin:0 auto;padding:64px 24px 80px}.section-2col{display:grid;grid-template-columns:240px 1fr;gap:48px}.section-aside{position:sticky;top:100px;align-self:start}.section-aside .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.section-aside .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}.section-aside h2{font-size:1.2em;font-weight:600;line-height:1.3;color:var(--text);margin:0}.section-body{display:flex;flex-direction:column;gap:16px}.section-full-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}.section-full-header .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}.section-full-header .header-text{display:flex;flex-direction:column;gap:4px}.section-full-header .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}.section-full-header h2{font-size:1.2em;font-weight:600;margin:0}.island{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}.island p{margin-bottom:14px;font-size:.93em;color:var(--text-secondary);line-height:1.8}.island p:last-child{margin-bottom:0}p{font-size:.93em;color:var(--text-secondary);line-height:1.8}.divider{max-width:1080px;margin:56px auto;padding:0 24px}.divider-line{height:1px;background:var(--border)}.ref-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow-sm)}.ref-list h3{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);margin-bottom:16px}.ref-list p{font-size:.82em;color:var(--text-secondary);margin-bottom:8px;line-height:1.6}.ref-list a{color:var(--accent);text-decoration:none}.footer{text-align:center;padding:40px 24px;font-size:.75em;color:var(--text-secondary);border-top:1px solid var(--border)}.footer a{color:var(--accent);text-decoration:none}
+        .risk-benefit{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.rb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;box-shadow:var(--shadow-sm)}.rb-card .rb-label{font-size:.65em;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px}.rb-card .rb-badge{padding:3px 10px;border-radius:100px;font-size:1em}.rb-card.risk .rb-label{color:#991b1b}.rb-card.risk .rb-badge{background:#fef2f2;color:#991b1b}.rb-card.benefit .rb-label{color:#065f46}.rb-card.benefit .rb-badge{background:#d1fae5;color:#065f46}.rb-card ul{list-style:none;padding:0}.rb-card li{font-size:.85em;color:var(--text-secondary);padding:6px 0 6px 20px;position:relative;line-height:1.5}.rb-card.risk li::before{content:'';position:absolute;left:0;top:13px;width:8px;height:8px;border-radius:50%;background:#fca5a5}.rb-card.benefit li::before{content:'';position:absolute;left:0;top:13px;width:8px;height:8px;border-radius:50%;background:#6ee7b7}
+        @media(max-width:900px){.section-2col{grid-template-columns:1fr;gap:24px}.section-aside{position:static}.risk-benefit{grid-template-columns:1fr}.sticky-nav{display:none}}@media(max-width:600px){.hero h1{font-size:2em}.hero{padding:64px 20px 56px}.content{padding:48px 20px 60px}.island{padding:24px 20px}}
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Blog Post #4 — Media Literacy<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 5</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="sticky-nav" id="stickyNav"><div class="sticky-nav-title">On this page</div><a href="#public-eye">Public Eye</a><a href="#literacy">Media Literacy</a><a href="#risk-reward">Risks & Rewards</a><a href="#references">References</a></nav>
+
+<div class="hero"><div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+    <a class="hero-back" href="../../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+    <h1>Media Literacy &amp; Public Discourse</h1>
+    <div class="hero-footer"><span>Andy Hu</span><span class="dot"></span><span>February 2026</span><span class="dot"></span><span class="pill">Blog Post #4 &middot; Week 5</span></div>
+</div></div>
+
+<div class="content">
+    <div class="section-2col" id="public-eye" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <span class="section-tag">In the Public Eye</span>
+            <h2>Being Visible Has a Cost</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>The Sophie Lui interview this week was one of the more grounding things I have listened to in this course. Lui is a working journalist — six o'clock anchor on Global BC — and her relationship with social media is not theoretical. She describes Twitter as a place where she learns and connects but also a place that "can eat away at my soul" if she follows accounts just because she feels she should. That kind of honesty is rare in conversations about digital identity.</p>
+                <p>What stood out was her distinction between platforms. Instagram is personal — dinner, wine, her partner. Twitter is where people learn about her personality and her intellectual interests. She is not maintaining separate identities. She is making deliberate choices about what each platform does for her. That is a level of intentionality that most people skip. We tend to use platforms by default rather than by design, and the result is a digital identity that happened to us rather than one we built.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>Lui also describes receiving a comb in the mail — no note, no return address — as a response to her short hairstyle on air. That is the cost side of public visibility that is easy to underestimate when you are building a professional presence from behind a screen. The harassment that public figures receive is not a side effect of social media. It is a structural feature of any system that gives anonymous audiences direct access to individuals. Social media did not create misogyny. It gave it a delivery mechanism.</p>
+            </div>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F4F0;</div>
-            <h2>Coming Soon</h2>
-            <p>Balancing PLN, media literacy, and public discourse</p>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="literacy" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+            <span class="section-tag">Defining the Term</span>
+            <h2>What Media Literacy Actually Means</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>Trilling and Fadel (2009) define media literacy as the ability to critically analyze, evaluate, and create media across formats. That definition sounds straightforward until you try to apply it in practice. Media literacy is not just about detecting fake news. It is about understanding how any piece of content was constructed, what choices the creator made, what was included and excluded, and what effect those choices have on how the audience perceives the message.</p>
+                <p>The MediaSmarts video this week illustrated this well by starting with an AI-generated house hippo video. The question it asks is simple: is this real? But the thinking it requires is not simple at all. It requires understanding how video is produced, what AI generation looks like, why someone might create this, and who benefits from you believing it. That chain of questions is media literacy in action.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>Hirst (2019) takes this further by examining the political economy of fake news — the economic incentives that drive misinformation. Fake news is not primarily an information problem. It is a business model. Content designed to provoke outrage generates clicks, which generates ad revenue. Understanding that supply chain is more useful than fact-checking any individual article. Media literacy at its best teaches you to ask not just "is this true?" but "why does this exist? who profits from me sharing it?"</p>
+                <p>Media literacy gets dismissed for a few reasons. Some people see it as condescending — the implication that they are being fooled. Others see it as politically motivated — an attempt to delegitimize specific media sources. And some people are simply not interested in doing the cognitive work. Doomscrolling is easier than critical analysis. But the cost of low media literacy is not just personal. It is societal. When enough people share misinformation uncritically, the information environment degrades for everyone.</p>
+            </div>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div id="risk-reward" data-aos="fade-up">
+        <div class="section-full-header">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="header-text">
+                <span class="section-tag">Professional Exposure</span>
+                <h2>Risks &amp; Benefits of Public Engagement</h2>
+            </div>
+        </div>
+
+        <div class="risk-benefit">
+            <div class="rb-card benefit" data-aos="fade-up" data-aos-delay="0">
+                <div class="rb-label"><span class="rb-badge">Benefits</span></div>
+                <ul>
+                    <li>Reach and visibility for your work and ideas</li>
+                    <li>Professional network expansion beyond geography</li>
+                    <li>Building credibility through consistent, public engagement</li>
+                    <li>Access to diverse perspectives that improve decision-making</li>
+                    <li>Recruitment and business development through reputation</li>
+                </ul>
+            </div>
+            <div class="rb-card risk" data-aos="fade-up" data-aos-delay="60">
+                <div class="rb-label"><span class="rb-badge">Risks</span></div>
+                <ul>
+                    <li>Permanent searchability of every public statement</li>
+                    <li>Context collapse — content consumed by unintended audiences</li>
+                    <li>Harassment and bad-faith engagement</li>
+                    <li>Employer liability when professional and personal lines blur</li>
+                    <li>Pressure to perform consistency rather than grow authentically</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50">
+            <p>The best approach to negative replies and critiques is the one Lui described: breathe, pause, and decide whether this is someone worth engaging with or someone worth muting. Not every criticism requires a response, and not every response requires a debate. The goal is not to win arguments online. It is to maintain a presence that reflects your values while preserving your energy for the work that actually matters. A PLN that values media literacy is one where the participants have developed the judgment to distinguish between constructive disagreement and performative conflict.</p>
+        </div>
     </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="ref-list" id="references" data-aos="fade-up">
+        <h3>References</h3>
+        <p>Hirst, M. (2019). Journalism in a "post-truth" world. In <em>Navigating social journalism</em>. Routledge.</p>
+        <p>Trilling, B., & Fadel, C. (2009). Digital literacy skills. In <em>21st century skills: Learning for life in our times</em>. Jossey-Bass.</p>
+        <p>MediaSmarts. (2021). What's real online? [Video]. YouTube. <a href="https://www.youtube.com/watch?v=JQZfNCd-iwI">youtube.com</a></p>
+        <p>Miller, J. (Host). (2021). In the public eye — Social media and evening news [Interview with Sophie Lui]. YouTube. <a href="https://youtu.be/oLFS_6KoCi0">youtu.be</a></p>
+        <p>Global News. (n.d.). Sophie Lui — Author page. <a href="https://globalnews.ca/author/sophie-lui/">globalnews.ca</a></p>
+    </div>
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({once:true,offset:60});window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});const nav=document.getElementById('stickyNav'),sections=document.querySelectorAll('[id]'),navLinks=nav.querySelectorAll('a');window.addEventListener('scroll',()=>{nav.classList.toggle('visible',window.scrollY>500);let c='';sections.forEach(s=>{if(s.id&&window.scrollY>=s.offsetTop-200)c=s.id});navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})})</script>
 </body>
 </html>
