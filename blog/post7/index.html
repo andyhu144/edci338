@@ -3,64 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post #7 — PLN & Evolving Internet | EDCI 338</title>
+    <title>PLN & the Evolving Internet | EDCI 338 — Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
-        .footer a { color: var(--accent); text-decoration: none; }
+        :root{--bg:#f8f9fa;--surface:#fff;--border:#e8eaed;--text:#1a1a2e;--text-secondary:#5f6368;--accent:#4f46e5;--accent-soft:#e0e7ff;--accent-dark:#3730a3;--hero-1:#1e1b4b;--hero-2:#4f46e5;--hero-3:#818cf8;--sans:'Inter',-apple-system,system-ui,sans-serif;--shadow-sm:0 1px 4px rgba(0,0,0,.04);--shadow-md:0 4px 20px rgba(0,0,0,.06);--radius:20px}@media(prefers-color-scheme:dark){:root{--bg:#0c0e14;--surface:#161820;--border:#252830;--text:#e8eaed;--text-secondary:#9aa0a6;--accent-soft:#1e1b4b;--shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 20px rgba(0,0,0,.3)}}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1000;width:0%;transition:width .1s linear}.sticky-nav{position:fixed;top:24px;right:24px;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-md);font-size:.75em;opacity:0;transform:translateY(-8px);transition:all .3s ease;pointer-events:none}.sticky-nav.visible{opacity:1;transform:translateY(0);pointer-events:all}.sticky-nav-title{font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-size:.85em;color:var(--text-secondary);margin-bottom:10px}.sticky-nav a{display:block;padding:5px 0;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s;border-left:2px solid transparent;padding-left:10px}.sticky-nav a:hover{color:var(--text)}.sticky-nav a.active{color:var(--accent);border-left-color:var(--accent)}.hero{position:relative;overflow:hidden;padding:100px 24px 88px;color:#fff}.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,var(--hero-1) 0%,var(--hero-2) 55%,var(--hero-3) 100%);background-size:200% 200%;animation:drift 10s ease infinite}.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(255,255,255,.07) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(255,255,255,.04) 0%,transparent 45%)}@keyframes drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto}.hero-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.82em;font-weight:500;margin-bottom:48px;transition:color .2s}.hero-back:hover{color:#fff}.hero h1{font-size:3em;font-weight:600;line-height:1.1;margin-bottom:40px}.hero-footer{display:flex;align-items:center;gap:16px;font-size:.8em;opacity:.5}.hero-footer .pill{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:5px 14px;border-radius:100px;font-weight:500}.hero-footer .dot{width:3px;height:3px;border-radius:50%;background:currentColor}.content{max-width:1080px;margin:0 auto;padding:64px 24px 80px}.section-2col{display:grid;grid-template-columns:240px 1fr;gap:48px}.section-aside{position:sticky;top:100px;align-self:start}.section-aside .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.section-aside .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}.section-aside h2{font-size:1.2em;font-weight:600;line-height:1.3;color:var(--text);margin:0}.section-body{display:flex;flex-direction:column;gap:16px}.section-full-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}.section-full-header .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}.section-full-header .header-text{display:flex;flex-direction:column;gap:4px}.section-full-header .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}.section-full-header h2{font-size:1.2em;font-weight:600;margin:0}.island{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}.island p{margin-bottom:14px;font-size:.93em;color:var(--text-secondary);line-height:1.8}.island p:last-child{margin-bottom:0}p{font-size:.93em;color:var(--text-secondary);line-height:1.8}.divider{max-width:1080px;margin:56px auto;padding:0 24px}.divider-line{height:1px;background:var(--border)}
+        .swot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.swot-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm)}.swot-card .sw-label{font-size:.65em;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px}.swot-card .sw-badge{padding:3px 10px;border-radius:100px;font-size:1em}.swot-card.strength .sw-label{color:#065f46}.swot-card.strength .sw-badge{background:#d1fae5;color:#065f46}.swot-card.weakness .sw-label{color:#92400e}.swot-card.weakness .sw-badge{background:#fef3c7;color:#92400e}.swot-card ul{list-style:none;padding:0}.swot-card li{font-size:.85em;color:var(--text-secondary);padding:5px 0 5px 18px;position:relative;line-height:1.5}.swot-card.strength li::before{content:'';position:absolute;left:0;top:12px;width:7px;height:7px;border-radius:50%;background:#6ee7b7}.swot-card.weakness li::before{content:'';position:absolute;left:0;top:12px;width:7px;height:7px;border-radius:50%;background:#fbbf24}
+        .ref-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow-sm)}.ref-list h3{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);margin-bottom:16px}.ref-list p{font-size:.82em;color:var(--text-secondary);margin-bottom:8px;line-height:1.6}.ref-list a{color:var(--accent);text-decoration:none}.footer{text-align:center;padding:40px 24px;font-size:.75em;color:var(--text-secondary);border-top:1px solid var(--border)}.footer a{color:var(--accent);text-decoration:none}
+        @media(max-width:900px){.section-2col{grid-template-columns:1fr;gap:24px}.section-aside{position:static}.swot{grid-template-columns:1fr}.sticky-nav{display:none}}@media(max-width:600px){.hero h1{font-size:2em}.hero{padding:64px 20px 56px}.content{padding:48px 20px 60px}.island{padding:24px 20px}}
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Blog Post #7 — PLN & Evolving Internet<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 9</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="sticky-nav" id="stickyNav"><div class="sticky-nav-title">On this page</div><a href="#current-pln">Current PLN</a><a href="#assessment">Assessment</a><a href="#ai-inclusion">AI & PLN</a><a href="#references">References</a></nav>
+
+<div class="hero"><div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+    <a class="hero-back" href="../../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+    <h1>PLN &amp; the Evolving Internet</h1>
+    <div class="hero-footer"><span>Andy Hu</span><span class="dot"></span><span>March 2026</span><span class="dot"></span><span class="pill">Blog Post #7 &middot; Week 9</span></div>
+</div></div>
+
+<div class="content">
+    <div class="section-2col" id="current-pln" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+            <span class="section-tag">My Network</span>
+            <h2>Current PLN Landscape</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>My PLN currently revolves around three clusters. The first is the developer community — GitHub, Stack Overflow, tech Twitter, and a handful of Discord servers where people share tools, patterns, and problems. This is where most of my professional learning happens in real time. When I hit a technical challenge, the answer almost always comes from somewhere in this network before it shows up in official documentation.</p>
+                <p>The second cluster is the product and design community — a mix of LinkedIn connections, Substack newsletters, and a few curated feeds on BlueSky. This is where I follow people who think about the intersection of technology and user experience. The third cluster, which I only started building since this course began, includes educators and people working in EdTech — the Mattermost community here at UVic, a few education-focused accounts I now follow, and resources like Chris Kennedy's blog on educational leadership in BC.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>Kennedy is a useful example of how PLNs work in Canadian education. As superintendent of the West Vancouver School District, he has maintained a public blog and social media presence for years, sharing reflections on educational leadership, innovation, and the challenges of running a public school system. His work demonstrates that a PLN is not just a personal tool — it can model transparency and reflective practice for an entire organization. In the Canadian context, this kind of visible educational leadership through social media remains relatively uncommon compared to the US, which makes the examples that exist more valuable.</p>
+            </div>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F310;</div>
-            <h2>Coming Soon</h2>
-            <p>PLNs, AI, equity, accessibility, and professional growth</p>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div id="assessment" data-aos="fade-up">
+        <div class="section-full-header">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
+            <div class="header-text">
+                <span class="section-tag">Critical Assessment</span>
+                <h2>Strengths &amp; Weaknesses</h2>
+            </div>
+        </div>
+
+        <div class="swot">
+            <div class="swot-card strength" data-aos="fade-up" data-aos-delay="0">
+                <div class="sw-label"><span class="sw-badge">Strengths</span></div>
+                <ul>
+                    <li>Deep technical expertise within the network</li>
+                    <li>Fast, real-time problem-solving through community</li>
+                    <li>Strong professional identity across platforms</li>
+                    <li>Open-source culture encourages knowledge sharing</li>
+                    <li>Direct access to industry leaders and practitioners</li>
+                </ul>
+            </div>
+            <div class="swot-card weakness" data-aos="fade-up" data-aos-delay="60">
+                <div class="sw-label"><span class="sw-badge">Weaknesses</span></div>
+                <ul>
+                    <li>Heavy tech bias — limited perspectives outside the industry</li>
+                    <li>Low geographic diversity — mostly North American voices</li>
+                    <li>Minimal engagement with education and social sciences</li>
+                    <li>Consumption-heavy on some platforms (YouTube, Reddit)</li>
+                    <li>AI tools integrated without enough critical assessment</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50">
+            <p>The biggest gap in my PLN is diversity of discipline. Almost everyone in my network is a developer, designer, or product person. That means the perspectives I am exposed to are strong on implementation but weak on the societal implications of what we build. Following educators, policy researchers, and people working in fields like accessibility and public health would give me a more complete picture of how the things I build affect people who use them.</p>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="ai-inclusion" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <span class="section-tag">Canadian Context</span>
+            <h2>AI Literacy &amp; the PLN</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>Estaiteyeh and Mindzak (2025) studied how Canadian teacher candidates engage with AI literacy, and their findings are directly relevant to how PLNs evolve. Among two cohorts of pre-service teachers in Ontario, the majority found value in learning about AI — not because they wanted to become AI experts, but because they recognized that their future students would be using these tools whether educators prepared for it or not. The study found that teacher candidates were generally inclined to use AI themselves but expressed negative views toward their students using it, which reveals a tension that most PLNs have not resolved yet.</p>
+                <p>That tension shows up in my own network. I use AI tools daily — code generation, debugging, writing assistance, research. I do not question whether these tools are useful. What I have not done enough of is critically evaluating how they reshape my learning process. Am I still building knowledge, or am I outsourcing the thinking that would lead to knowledge? That question is not comfortable, and most of my PLN does not engage with it. The tech community tends to treat AI adoption as inevitable progress rather than something worth examining critically.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>Broadening my PLN to include voices from education research — people like Estaiteyeh and Mindzak who study how practitioners actually engage with AI, rather than just how the technology works — would make my relationship with these tools more informed. The strongest PLNs are not the ones with the most connections. They are the ones that include people who make you question assumptions you did not know you were making. For me, the assumption I need to question most right now is that more AI integration always equals better outcomes. The Canadian research suggests it is more complicated than that.</p>
+            </div>
+        </div>
     </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="ref-list" id="references" data-aos="fade-up">
+        <h3>References</h3>
+        <p>Estaiteyeh, M., & Mindzak, M. (2025). Building AI literacy in pre-service teacher education in Canada: A case study of two cohorts. <em>Journal of Teaching and Learning, 19</em>(4), 135–154. <a href="https://doi.org/10.22329/jtl.v19i4.10041">doi.org</a></p>
+        <p>Kennedy, C. (n.d.). Culture of Yes [Blog]. West Vancouver Schools. <a href="https://cultureofyes.ca/">cultureofyes.ca</a></p>
+    </div>
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({once:true,offset:60});window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});const nav=document.getElementById('stickyNav'),sections=document.querySelectorAll('[id]'),navLinks=nav.querySelectorAll('a');window.addEventListener('scroll',()=>{nav.classList.toggle('visible',window.scrollY>500);let c='';sections.forEach(s=>{if(s.id&&window.scrollY>=s.offsetTop-200)c=s.id});navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})})</script>
 </body>
 </html>

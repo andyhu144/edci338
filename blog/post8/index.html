@@ -3,64 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post #8 — AI & Social Media | EDCI 338</title>
+    <title>AI & Social Media | EDCI 338 — Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
-        .footer a { color: var(--accent); text-decoration: none; }
+        :root{--bg:#f8f9fa;--surface:#fff;--border:#e8eaed;--text:#1a1a2e;--text-secondary:#5f6368;--accent:#4f46e5;--accent-soft:#e0e7ff;--accent-dark:#3730a3;--hero-1:#1e1b4b;--hero-2:#4f46e5;--hero-3:#818cf8;--sans:'Inter',-apple-system,system-ui,sans-serif;--shadow-sm:0 1px 4px rgba(0,0,0,.04);--shadow-md:0 4px 20px rgba(0,0,0,.06);--radius:20px}@media(prefers-color-scheme:dark){:root{--bg:#0c0e14;--surface:#161820;--border:#252830;--text:#e8eaed;--text-secondary:#9aa0a6;--accent-soft:#1e1b4b;--shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 20px rgba(0,0,0,.3)}}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1000;width:0%;transition:width .1s linear}.sticky-nav{position:fixed;top:24px;right:24px;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-md);font-size:.75em;opacity:0;transform:translateY(-8px);transition:all .3s ease;pointer-events:none}.sticky-nav.visible{opacity:1;transform:translateY(0);pointer-events:all}.sticky-nav-title{font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-size:.85em;color:var(--text-secondary);margin-bottom:10px}.sticky-nav a{display:block;padding:5px 0;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s;border-left:2px solid transparent;padding-left:10px}.sticky-nav a:hover{color:var(--text)}.sticky-nav a.active{color:var(--accent);border-left-color:var(--accent)}.hero{position:relative;overflow:hidden;padding:100px 24px 88px;color:#fff}.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,var(--hero-1) 0%,var(--hero-2) 55%,var(--hero-3) 100%);background-size:200% 200%;animation:drift 10s ease infinite}.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(255,255,255,.07) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(255,255,255,.04) 0%,transparent 45%)}@keyframes drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto}.hero-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.82em;font-weight:500;margin-bottom:48px;transition:color .2s}.hero-back:hover{color:#fff}.hero h1{font-size:3em;font-weight:600;line-height:1.1;margin-bottom:40px}.hero-footer{display:flex;align-items:center;gap:16px;font-size:.8em;opacity:.5}.hero-footer .pill{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:5px 14px;border-radius:100px;font-weight:500}.hero-footer .dot{width:3px;height:3px;border-radius:50%;background:currentColor}.content{max-width:1080px;margin:0 auto;padding:64px 24px 80px}.section-2col{display:grid;grid-template-columns:240px 1fr;gap:48px}.section-aside{position:sticky;top:100px;align-self:start}.section-aside .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.section-aside .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}.section-aside h2{font-size:1.2em;font-weight:600;line-height:1.3;color:var(--text);margin:0}.section-body{display:flex;flex-direction:column;gap:16px}.section-full-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}.section-full-header .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}.section-full-header .header-text{display:flex;flex-direction:column;gap:4px}.section-full-header .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}.section-full-header h2{font-size:1.2em;font-weight:600;margin:0}.island{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}.island p{margin-bottom:14px;font-size:.93em;color:var(--text-secondary);line-height:1.8}.island p:last-child{margin-bottom:0}p{font-size:.93em;color:var(--text-secondary);line-height:1.8}.divider{max-width:1080px;margin:56px auto;padding:0 24px}.divider-line{height:1px;background:var(--border)}
+        .curriculum{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px;box-shadow:var(--shadow-sm);margin:20px 0}.curriculum-title{font-size:.68em;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:20px}.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.mod-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .25s}.mod-card:hover{border-color:var(--accent);transform:translateY(-2px)}.mod-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:.75em;font-weight:700}.mod-card strong{display:block;font-size:.85em;margin-bottom:4px;color:var(--text)}.mod-card span{font-size:.75em;color:var(--text-secondary);line-height:1.4}
+        .ref-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow-sm)}.ref-list h3{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);margin-bottom:16px}.ref-list p{font-size:.82em;color:var(--text-secondary);margin-bottom:8px;line-height:1.6}.ref-list a{color:var(--accent);text-decoration:none}.footer{text-align:center;padding:40px 24px;font-size:.75em;color:var(--text-secondary);border-top:1px solid var(--border)}.footer a{color:var(--accent);text-decoration:none}
+        @media(max-width:900px){.section-2col{grid-template-columns:1fr;gap:24px}.section-aside{position:static}.mod-grid{grid-template-columns:1fr}.sticky-nav{display:none}}@media(max-width:600px){.hero h1{font-size:2em}.hero{padding:64px 20px 56px}.content{padding:48px 20px 60px}.island{padding:24px 20px}.curriculum{padding:24px 20px}}
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Blog Post #8 — AI & Social Media<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 10</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="sticky-nav" id="stickyNav"><div class="sticky-nav-title">On this page</div><a href="#misinfo">AI Misinformation</a><a href="#canadian">Canadian Example</a><a href="#curriculum">Curriculum Proposal</a><a href="#references">References</a></nav>
+
+<div class="hero"><div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+    <a class="hero-back" href="../../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+    <h1>AI &amp; Social Media</h1>
+    <div class="hero-footer"><span>Andy Hu</span><span class="dot"></span><span>March 2026</span><span class="dot"></span><span class="pill">Blog Post #8 &middot; Week 10</span></div>
+</div></div>
+
+<div class="content">
+    <div class="section-2col" id="misinfo" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <span class="section-tag">Risks &amp; Opportunities</span>
+            <h2>AI-Driven Misinformation</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>The instructor made a point this week that stuck with me: "doomscrolling now includes AI slop." That is a good summary of where we are. AI-generated content has reached the point where it is not just filling gaps in content production — it is flooding social media feeds with material that looks real, sounds authoritative, and requires genuine effort to evaluate. For digital citizenship, that changes the baseline. It is no longer enough to teach people to check sources. You now need to teach them to question whether the content they are looking at was produced by a human at all.</p>
+                <p>MediaSmarts highlights this in their Media Literacy Week report: the volume of AI-generated content online has grown faster than the public's ability to critically assess it. The gap between production capacity and literacy is the core problem. AI can generate thousands of articles, images, and videos in the time it takes a human to evaluate one. That asymmetry makes traditional fact-checking insufficient as a primary defense. The scale of the problem requires systemic responses, not just individual vigilance.</p>
+            </div>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F916;</div>
-            <h2>Coming Soon</h2>
-            <p>AI risks, digital citizenship, and media literacy in Canadian education</p>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="canadian" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <span class="section-tag">Canadian Context</span>
+            <h2>Extremism &amp; AI in Canada</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>A specific Canadian example is the CBC investigation that uncovered extremist activity within the Canadian military, including the use of online platforms and AI-generated content to recruit and radicalize. The investigation revealed that white supremacist networks were operating with relative impunity inside military structures, using social media to spread ideology and coordinate. Groups like the Canadian Anti-Hate Network (antihate.ca) identified these patterns well before government agencies acted on them — demonstrating that civil society organizations are often faster at detecting AI-amplified radicalization than the institutions responsible for preventing it.</p>
+                <p>Vass Bednar's article in The Walrus frames this within a broader cultural context. "AI slop" — low-quality, synthetic content flooding digital platforms — threatens to drown the human voices that Canadian cultural policy was specifically designed to protect. Canada's broadcasting and cultural funding frameworks were built on the premise that Canadian stories need protection from dominant American media. AI-generated content introduces a new threat: not foreign cultural dominance, but algorithmic irrelevance. When AI can produce infinite content at zero cost, the economic model that supports Canadian journalism, art, and media production becomes increasingly fragile.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>The impact on public opinion is not hypothetical. When AI-generated content is indistinguishable from human-created content, and when engagement algorithms distribute both equally, the entire information environment becomes unreliable. Public opinion is not formed by individual articles. It is shaped by the aggregate of what people see, and when a significant portion of that aggregate is synthetic, the foundation of informed democratic participation erodes. This is particularly concerning in the Canadian context, where the DAIS report on Canada's AI strategy emphasizes the need for proactive regulation rather than reactive responses.</p>
+            </div>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div id="curriculum" data-aos="fade-up">
+        <div class="section-full-header">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+            <div class="header-text">
+                <span class="section-tag">Proposal</span>
+                <h2>Media Literacy Curriculum Segment</h2>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50" style="margin-bottom: 20px;">
+            <p>I would propose a three-module media literacy segment aimed at secondary school students (grades 10–12) that focuses specifically on AI-generated content. The goal is not to make students afraid of AI. It is to give them the critical framework to evaluate any content they encounter, regardless of its source.</p>
+        </div>
+
+        <div class="curriculum" data-aos="fade-up" data-aos-delay="100">
+            <div class="curriculum-title">Proposed Curriculum: Critical AI Literacy</div>
+            <div class="mod-grid">
+                <div class="mod-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="mod-num">1</div>
+                    <strong>Detection</strong>
+                    <span>How to identify AI-generated text, images, and video. Hands-on exercises comparing human and synthetic content.</span>
+                </div>
+                <div class="mod-card" data-aos="fade-up" data-aos-delay="40">
+                    <div class="mod-num">2</div>
+                    <strong>Economics</strong>
+                    <span>Who profits from misinformation? Follow the money from content creation through ad revenue to platform engagement.</span>
+                </div>
+                <div class="mod-card" data-aos="fade-up" data-aos-delay="80">
+                    <div class="mod-num">3</div>
+                    <strong>Response</strong>
+                    <span>What to do when you encounter misinformation. Reporting, not sharing, lateral reading, and upstream verification.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50">
+            <p>This curriculum structure is supported by DAIS's recommendation that Canada's AI strategy needs to address literacy gaps alongside regulatory frameworks. Regulation alone cannot solve the problem because the content evolves faster than policy. Building critical assessment skills at the secondary level creates a population that can adapt to new forms of misinformation as they emerge. The investment is in the capacity to think critically, not in the ability to detect any specific type of content.</p>
+        </div>
     </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="ref-list" id="references" data-aos="fade-up">
+        <h3>References</h3>
+        <p>MediaSmarts. (2025). Wait... what? Media literacy week highlights growing concern over AI-driven misinformation. <a href="https://mediasmarts.ca/about-us/press-centre/wait-what-media-literacy-week-highlights-growing-concern-over-ai-driven-misinformation">mediasmarts.ca</a></p>
+        <p>DAIS. (2025). Submission to the consultation on Canada's renewed AI strategy. <a href="https://dais.ca/reports/submission-to-the-consultation-on-canadas-renewed-ai-strategy/">dais.ca</a></p>
+        <p>DAIS. (2025). Human or AI? <a href="https://dais.ca/reports/human-or-ai/">dais.ca</a></p>
+        <p>Bednar, V. (2026, January 6). AI slop will end Canadian culture as we know it. <em>The Walrus</em>. <a href="https://thewalrus.ca/can-canadian-culture-survive-the-age-of-ai-slop/">thewalrus.ca</a></p>
+        <p>CBC News. (2026). Extremist activity in Canadian military. <a href="https://www.cbc.ca/news/canada/whitedate-canada-military-9.7117307">cbc.ca</a></p>
+        <p>Gilmore, R. (2025). Author biography. <em>The Tyee</em>. <a href="https://thetyee.ca/Bios/Rachel_Gilmore">thetyee.ca</a></p>
+    </div>
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({once:true,offset:60});window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});const nav=document.getElementById('stickyNav'),sections=document.querySelectorAll('[id]'),navLinks=nav.querySelectorAll('a');window.addEventListener('scroll',()=>{nav.classList.toggle('visible',window.scrollY>500);let c='';sections.forEach(s=>{if(s.id&&window.scrollY>=s.offsetTop-200)c=s.id});navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})})</script>
 </body>
 </html>
