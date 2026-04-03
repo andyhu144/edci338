@@ -3,64 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post #1 — PLN & Digital Identity | EDCI 338</title>
+    <title>PLN & Digital Identity | EDCI 338 — Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
+            --bg: #f8f9fa; --surface: #ffffff; --border: #e8eaed;
+            --text: #1a1a2e; --text-secondary: #5f6368;
+            --accent: #4f46e5; --accent-soft: #e0e7ff; --accent-dark: #3730a3;
             --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
+            --sans: 'Inter', -apple-system, system-ui, sans-serif;
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.04); --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --radius: 20px;
         }
         @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
+            :root { --bg: #0c0e14; --surface: #161820; --border: #252830; --text: #e8eaed; --text-secondary: #9aa0a6; --accent-soft: #1e1b4b; --shadow-sm: 0 1px 4px rgba(0,0,0,0.2); --shadow-md: 0 4px 20px rgba(0,0,0,0.3); }
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
+        body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.7; }
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); z-index: 1000; width: 0%; transition: width 0.1s linear; }
+        .sticky-nav { position: fixed; top: 24px; right: 24px; z-index: 100; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; box-shadow: var(--shadow-md); font-size: 0.75em; opacity: 0; transform: translateY(-8px); transition: all 0.3s ease; pointer-events: none; }
+        .sticky-nav.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+        .sticky-nav-title { font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.85em; color: var(--text-secondary); margin-bottom: 10px; }
+        .sticky-nav a { display: block; padding: 5px 0; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; border-left: 2px solid transparent; padding-left: 10px; }
+        .sticky-nav a:hover { color: var(--text); }
+        .sticky-nav a.active { color: var(--accent); border-left-color: var(--accent); }
+        .hero { position: relative; overflow: hidden; padding: 100px 24px 88px; color: white; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(145deg, var(--hero-1) 0%, var(--hero-2) 55%, var(--hero-3) 100%); background-size: 200% 200%; animation: drift 10s ease infinite; }
+        .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 60%, rgba(255,255,255,0.07) 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, rgba(255,255,255,0.04) 0%, transparent 45%); }
+        @keyframes drift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .hero-inner { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; }
+        .hero-back { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82em; font-weight: 500; margin-bottom: 48px; transition: color 0.2s; }
+        .hero-back:hover { color: white; }
+        .hero h1 { font-size: 3em; font-weight: 600; line-height: 1.1; margin-bottom: 40px; }
+        .hero-footer { display: flex; align-items: center; gap: 16px; font-size: 0.8em; opacity: 0.5; }
+        .hero-footer .pill { background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); padding: 5px 14px; border-radius: 100px; font-weight: 500; }
+        .hero-footer .dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
+        .content { max-width: 1080px; margin: 0 auto; padding: 64px 24px 80px; }
+        .section-2col { display: grid; grid-template-columns: 240px 1fr; gap: 48px; }
+        .section-aside { position: sticky; top: 100px; align-self: start; }
+        .section-aside .section-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .section-aside .section-tag { font-size: 0.65em; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 8px; }
+        .section-aside h2 { font-size: 1.2em; font-weight: 600; line-height: 1.3; color: var(--text); margin: 0; }
+        .section-body { display: flex; flex-direction: column; gap: 16px; }
+        .section-full-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .section-full-header .section-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .section-full-header .section-tag { font-size: 0.65em; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); }
+        .section-full-header h2 { font-size: 1.2em; font-weight: 600; margin: 0; }
+        .section-full-header .header-text { display: flex; flex-direction: column; gap: 4px; }
+        .island { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 36px; box-shadow: var(--shadow-sm); }
+        .island p { margin-bottom: 14px; font-size: 0.93em; color: var(--text-secondary); line-height: 1.8; }
+        .island p:last-child { margin-bottom: 0; }
+        p { font-size: 0.93em; color: var(--text-secondary); line-height: 1.8; }
+        .divider { max-width: 1080px; margin: 56px auto; padding: 0 24px; }
+        .divider-line { height: 1px; background: var(--border); }
+        .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .concept-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; box-shadow: var(--shadow-sm); transition: all 0.25s; }
+        .concept-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .concept-card .c-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+        .concept-card strong { display: block; font-size: 0.88em; margin-bottom: 6px; color: var(--text); }
+        .concept-card span { font-size: 0.78em; color: var(--text-secondary); line-height: 1.5; }
+        /* Controlled vs Uncontrolled visual */
+        .dual-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; box-shadow: var(--shadow-sm); }
+        .panel-label { font-size: 0.65em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .panel-label .badge { padding: 3px 10px; border-radius: 100px; font-size: 1em; }
+        .panel.controlled .panel-label { color: #065f46; }
+        .panel.controlled .badge { background: #d1fae5; color: #065f46; }
+        .panel.uncontrolled .panel-label { color: #92400e; }
+        .panel.uncontrolled .badge { background: #fef3c7; color: #92400e; }
+        .panel ul { list-style: none; padding: 0; }
+        .panel li { font-size: 0.85em; color: var(--text-secondary); padding: 6px 0 6px 20px; position: relative; line-height: 1.5; }
+        .panel.controlled li::before { content: ''; position: absolute; left: 0; top: 13px; width: 8px; height: 8px; border-radius: 50%; background: #34d399; }
+        .panel.uncontrolled li::before { content: ''; position: absolute; left: 0; top: 13px; width: 8px; height: 8px; border-radius: 50%; background: #fbbf24; }
+        .ref-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-sm); }
+        .ref-list h3 { font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 16px; }
+        .ref-list p { font-size: 0.82em; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.6; }
+        .ref-list a { color: var(--accent); text-decoration: none; }
+        .footer { text-align: center; padding: 40px 24px; font-size: 0.75em; color: var(--text-secondary); border-top: 1px solid var(--border); }
         .footer a { color: var(--accent); text-decoration: none; }
+        @media (max-width: 900px) { .section-2col { grid-template-columns: 1fr; gap: 24px; } .section-aside { position: static; } .concept-grid { grid-template-columns: 1fr; } .dual-panel { grid-template-columns: 1fr; } .sticky-nav { display: none; } }
+        @media (max-width: 600px) { .hero h1 { font-size: 2em; } .hero { padding: 64px 20px 56px; } .content { padding: 48px 20px 60px; } .island { padding: 24px 20px; } }
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Blog Post #1 — PLN & Digital Identity<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 2</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="sticky-nav" id="stickyNav">
+    <div class="sticky-nav-title">On this page</div>
+    <a href="#identity">Digital Identity</a>
+    <a href="#presence">Controlled vs Uncontrolled</a>
+    <a href="#convergence">Convergence</a>
+    <a href="#references">References</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+        <a class="hero-back" href="../../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+        <h1>PLN &amp; Digital Identity</h1>
+        <div class="hero-footer">
+            <span>Andy Hu</span><span class="dot"></span><span>January 2026</span><span class="dot"></span><span class="pill">Blog Post #1 &middot; Week 2</span>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F4DD;</div>
-            <h2>Coming Soon</h2>
-            <p>Personal Learning Networks and digital identity</p>
+</div>
+
+<div class="content">
+    <div class="section-2col" id="identity" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span class="section-tag">Defining the Concept</span>
+            <h2>What Is Digital Identity?</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>Eric Stoller defines digital identity as "your presence online — everything that you post, share, how you engage, how you treat other people, and how you use digital tools" (Stoller, 2016). That definition is broad on purpose. It covers everything from a LinkedIn profile you carefully curated to a comment you left on a Reddit thread three years ago that you have completely forgotten about.</p>
+                <p>For someone running a software company, digital identity is not abstract. It is the first thing a potential client sees before they ever talk to you. Your GitHub contribution graph, your product's landing page, your responses in a public forum — these are all identity artifacts. They are searchable, persistent, and always representing you whether you are actively managing them or not.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>What I find interesting about networking through social media is that it collapses the distinction between reputation and self-presentation. In an offline setting, your reputation is what others say about you when you are not in the room. Online, the room never closes. Your posts, your code, your public interactions — they are always in the room, accessible to anyone with a search engine. That creates both opportunity and exposure in a way that offline networking never did.</p>
+                <p>The motivation to participate in networked publics comes down to visibility. If you are building a product, you need people to know it exists. If you are hiring, you need candidates to find you. If you are learning, you need to connect with people who know more than you. Social media makes all of that possible at a scale that cold emails and conference handshakes cannot match. But it also means you are always performing, whether you intend to or not.</p>
+            </div>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div id="presence" data-aos="fade-up">
+        <div class="section-full-header">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div class="header-text">
+                <span class="section-tag">Digital Identity Exercise</span>
+                <h2>Controlled vs Uncontrolled Presence</h2>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50" style="margin-bottom: 20px;">
+            <p>The course asks us to distinguish between controlled and uncontrolled digital presence. Controlled presence is what you intentionally create and publish. Uncontrolled presence is everything else — content others share about you, mentions you did not initiate, metadata you did not realize you were generating. danah boyd's work on networked privacy makes the point that privacy is no longer an individual property. When someone tags you in a photo, they have made a decision about your data that you did not consent to (boyd, 2012).</p>
+        </div>
+
+        <div class="dual-panel">
+            <div class="panel controlled" data-aos="fade-up" data-aos-delay="0">
+                <div class="panel-label"><span class="badge">Controlled</span> What I create</div>
+                <ul>
+                    <li>Company website and product pages</li>
+                    <li>GitHub repositories and open-source contributions</li>
+                    <li>LinkedIn profile and professional blog</li>
+                    <li>Technical writing and documentation</li>
+                    <li>Conference talks and workshop materials</li>
+                </ul>
+            </div>
+            <div class="panel uncontrolled" data-aos="fade-up" data-aos-delay="60">
+                <div class="panel-label"><span class="badge">Uncontrolled</span> What exists without me</div>
+                <ul>
+                    <li>Client reviews and testimonials</li>
+                    <li>Social media mentions and tags</li>
+                    <li>Cached search results from old profiles</li>
+                    <li>Forum discussions referencing my work</li>
+                    <li>Analytics and tracking data across platforms</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="island" data-aos="fade-up" data-aos-delay="50">
+            <p>The interesting tension is that the uncontrolled side often carries more weight than the controlled side. A client review on a third-party site is more credible than anything on your own website. A forum thread where someone recommends your product is more persuasive than your marketing copy. The parts of your digital identity that you cannot control are frequently the parts that matter most. That is both the risk and the reward of public communications — you gain reach and credibility, but you lose control over how your presence is framed.</p>
+        </div>
     </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="convergence" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            <span class="section-tag">Personal & Professional</span>
+            <h2>Where Identities Converge</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>One of the questions this week asks how personal versus professional approaches to digital identity affect social media use. In practice, the line between the two is thinner than most people realize. Spracklen (2015) frames social media as a leisure space where identity is actively constructed — people perform belonging through the communities they engage with. But when your professional identity lives on the same platforms as your personal life, those performances overlap. A tweet about your weekend can sit next to a tweet about your product launch. Potential clients see both.</p>
+                <p>I manage this by treating platforms differently. LinkedIn is professional — industry content, hiring updates, product milestones. GitHub is professional by default — the code speaks for itself. Twitter is where the lines blur, and I have learned to be comfortable with that. Showing some personality makes you approachable. Showing too much makes you a liability. The judgment call is not always obvious, and getting it wrong can have professional consequences.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>The convergence of digital identities in networked publics creates what Rajagopal et al. (2012) describe as a Personal Learning Network — a network of people, resources, and tools that supports ongoing professional learning. The key insight is that a PLN is not something you set up once. It is something you cultivate over time through deliberate participation. Every comment you leave, every article you share, every connection you accept is a decision about what your network looks like and what it can do for you.</p>
+                <p>The benefit of this convergence is reach. A single well-placed contribution in a public forum can connect you to people you would never meet otherwise. The impact is that your digital identity becomes your first impression in every professional interaction — and unlike an in-person first impression, it is permanent, searchable, and available to everyone simultaneously.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="ref-list" id="references" data-aos="fade-up">
+        <h3>References</h3>
+        <p>boyd, d. (2012). Networked privacy. <em>Surveillance & Society, 10</em>(3/4), 348–350. <a href="https://ojs.library.queensu.ca/index.php/surveillance-and-society/article/view/networked">queensu.ca</a></p>
+        <p>Rajagopal, K., Joosten-ten Brinke, D., Van Bruggen, J., & Sloep, P. B. (2012). Understanding personal learning networks. <em>First Monday, 17</em>(1). <a href="https://doi.org/10.5210/fm.v17i1.3559">doi.org</a></p>
+        <p>Spracklen, K. (2015). Identity making and social media. In <em>Digital leisure, the internet and popular culture</em> (pp. 91–112). Palgrave Macmillan. <a href="https://doi.org/10.1057/9781137405876_6">doi.org</a></p>
+        <p>Stoller, E. (2016). What is digital identity? [Video]. YouTube. <a href="https://youtu.be/u0RryRbJza0">youtu.be</a></p>
+        <p>World Economic Forum. (2019). The value of digital identity for the global economy and society [Video]. YouTube. <a href="https://youtu.be/1-V7lyxrOmw">youtu.be</a></p>
+        <p>FutureLearn. (2015). What is a personal learning network (PLN)? <em>Learning in a Network Age</em>. <a href="https://www.futurelearn.com/courses/learning-network-age/0/steps/24644">futurelearn.com</a></p>
+    </div>
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({ once: true, offset: 60 });
+    window.addEventListener('scroll', () => { const h = document.documentElement; document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%'; });
+    const nav = document.getElementById('stickyNav'), sections = document.querySelectorAll('[id]'), navLinks = nav.querySelectorAll('a');
+    window.addEventListener('scroll', () => { nav.classList.toggle('visible', window.scrollY > 500); let c = ''; sections.forEach(s => { if (s.id && window.scrollY >= s.offsetTop - 200) c = s.id; }); navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + c); }); });
+</script>
 </body>
 </html>
