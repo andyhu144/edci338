@@ -3,64 +3,761 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Group Project | EDCI 338</title>
+    <title>Building Your PLN | EDCI 338 Final Project | Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
+            --bg: #f8f9fa; --surface: #ffffff; --border: #e5e7eb; --text: #111827; --text-secondary: #6b7280;
+            --accent: #4f46e5; --accent-soft: #eef2ff; --accent-dark: #3730a3; --accent-glow: rgba(79,70,229,0.15);
+            --green: #059669; --green-soft: #d1fae5; --amber: #d97706; --amber-soft: #fef3c7; --red: #dc2626; --red-soft: #fee2e2;
+            --hero-1: #0f172a; --hero-2: #1e1b4b; --hero-3: #4f46e5; --hero-4: #818cf8;
+            --sans: 'Inter', -apple-system, system-ui, sans-serif;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04); --shadow-md: 0 4px 20px rgba(0,0,0,0.07); --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+            --radius: 20px; --radius-sm: 12px;
         }
+
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+                --bg: #0a0b0f; --surface: #13141a; --border: #1f2937; --text: #f1f5f9; --text-secondary: #94a3b8;
+                --accent-soft: #1e1b4b; --accent-glow: rgba(79,70,229,0.25);
+                --green-soft: #064e3b; --amber-soft: #78350f; --red-soft: #7f1d1d;
+                --shadow-sm: 0 1px 3px rgba(0,0,0,0.2); --shadow-md: 0 4px 20px rgba(0,0,0,0.3); --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
             }
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.7; }
+
+        /* ── Progress Bar ── */
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--hero-4)); z-index: 1000; width: 0%; transition: width 0.15s linear; }
+
+        /* ── Floating Nav ── */
+        .float-nav { position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 6px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .float-nav.visible { opacity: 1; pointer-events: all; }
+        .float-nav a { width: 10px; height: 10px; border-radius: 50%; background: var(--border); display: block; transition: all 0.2s; position: relative; }
+        .float-nav a:hover { background: var(--accent); transform: scale(1.3); }
+        .float-nav a.active { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .float-nav a .nav-tip { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: var(--text); color: var(--bg); font-size: 0.7em; font-weight: 500; padding: 4px 10px; border-radius: 6px; white-space: nowrap; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .float-nav a:hover .nav-tip { opacity: 1; }
+
+        /* ── Hero ── */
+        .hero { position: relative; overflow: hidden; min-height: 100vh; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 80px 24px; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 30%, var(--hero-3) 70%, var(--hero-4) 100%); background-size: 300% 300%; animation: heroGradient 12s ease infinite; }
+        @keyframes heroGradient { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04) 0%, transparent 40%); }
+        .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; }
+        .hero-label { display: inline-block; font-size: 0.72em; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 100px; margin-bottom: 32px; border: 1px solid rgba(255,255,255,0.1); }
+        .hero h1 { font-size: 4em; font-weight: 800; line-height: 1.05; margin-bottom: 20px; letter-spacing: -0.02em; }
+        .hero h1 span { background: linear-gradient(135deg, #c7d2fe, #818cf8, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-sub { font-size: 1.15em; opacity: 0.65; max-width: 550px; margin: 0 auto 40px; line-height: 1.7; }
+        .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--hero-2); font-weight: 600; font-size: 0.9em; padding: 14px 28px; border-radius: 12px; text-decoration: none; transition: all 0.25s; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .hero-meta { margin-top: 48px; display: flex; justify-content: center; gap: 32px; font-size: 0.8em; opacity: 0.4; }
+        .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 1; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+        /* ── Section Layout ── */
+        .section { max-width: 1120px; margin: 0 auto; padding: 100px 24px; }
+        .section-header { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+        .section-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: white; font-size: 0.82em; font-weight: 700; margin-bottom: 16px; }
+        .section-tag { font-size: 0.68em; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+        .section h2 { font-size: 2em; font-weight: 700; line-height: 1.2; margin-bottom: 14px; letter-spacing: -0.01em; }
+        .section-desc { font-size: 0.95em; color: var(--text-secondary); max-width: 560px; margin: 0 auto; }
+        .section-divider { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        .section-divider-line { height: 1px; background: var(--border); }
+
+        /* ── Island ── */
+        .island { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 36px; box-shadow: var(--shadow-sm); }
+        .island p { font-size: 0.93em; color: var(--text-secondary); line-height: 1.8; margin-bottom: 14px; }
+        .island p:last-child { margin-bottom: 0; }
+
+        /* ── Cols ── */
+        .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+        /* ── Platform Cards ── */
+        .platform-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 24px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
+        .platform-card:hover, .platform-card.active { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .platform-card.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+        .platform-card .p-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+        .platform-card strong { display: block; font-size: 0.88em; margin-bottom: 4px; }
+        .platform-card span { font-size: 0.75em; color: var(--text-secondary); line-height: 1.4; }
+
+        /* ── Radar Chart Container ── */
+        .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm); margin-top: 24px; }
+        .chart-wrap canvas { max-height: 360px; }
+
+        /* ── Toggle Demo ── */
+        .toggle-demo { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .toggle-bar { display: flex; border-bottom: 1px solid var(--border); }
+        .toggle-btn { flex: 1; padding: 14px; text-align: center; font-size: 0.82em; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent; border: none; color: var(--text-secondary); font-family: var(--sans); }
+        .toggle-btn.active { background: var(--accent-soft); color: var(--accent); }
+        .toggle-content { padding: 28px; min-height: 200px; }
+        .toggle-panel { display: none; }
+        .toggle-panel.active { display: block; }
+
+        /* ── Interactive V&R Builder ── */
+        .vr-builder { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm); }
+        .vr-builder-title { font-size: 0.68em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 20px; text-align: center; }
+        .vr-grid { position: relative; width: 100%; aspect-ratio: 2/1; min-height: 300px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; }
+        .vr-grid::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--border); }
+        .vr-grid::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border); }
+        .vr-axis { position: absolute; font-size: 0.6em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); opacity: 0.5; }
+        .vr-axis.top { top: 8px; left: 50%; transform: translateX(-50%); }
+        .vr-axis.bottom { bottom: 8px; left: 50%; transform: translateX(-50%); }
+        .vr-axis.left { left: 12px; top: 50%; transform: translateY(-50%); }
+        .vr-axis.right { right: 12px; top: 50%; transform: translateY(-50%); }
+        .vr-chip { position: absolute; padding: 6px 14px; border-radius: 100px; font-size: 0.72em; font-weight: 600; cursor: grab; transition: box-shadow 0.2s; user-select: none; white-space: nowrap; z-index: 2; }
+        .vr-chip:active { cursor: grabbing; box-shadow: var(--shadow-lg); z-index: 10; }
+        .vr-chip.prof { background: var(--accent); color: white; }
+        .vr-chip.pers { background: var(--amber); color: white; }
+
+        /* ── Quiz ── */
+        .quiz { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; box-shadow: var(--shadow-sm); }
+        .quiz-title { font-size: 0.72em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+        .quiz-q { font-size: 1em; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .quiz-opt { padding: 14px 18px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88em; cursor: pointer; transition: all 0.2s; background: var(--surface); font-family: var(--sans); text-align: left; color: var(--text); }
+        .quiz-opt:hover { border-color: var(--accent); background: var(--accent-soft); }
+        .quiz-opt.correct { border-color: var(--green); background: var(--green-soft); }
+        .quiz-opt.wrong { border-color: var(--red); background: var(--red-soft); }
+        .quiz-opt.disabled { pointer-events: none; opacity: 0.7; }
+        .quiz-feedback { padding: 16px 20px; border-radius: var(--radius-sm); font-size: 0.88em; line-height: 1.6; display: none; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: var(--green-soft); color: var(--green); }
+        .quiz-feedback.wrong { background: var(--red-soft); color: var(--red); }
+        .quiz-progress { display: flex; gap: 6px; margin-bottom: 20px; }
+        .quiz-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+        .quiz-dot.done { background: var(--green); }
+        .quiz-dot.current { background: var(--accent); }
+        .quiz-nav { display: flex; justify-content: flex-end; margin-top: 16px; }
+        .quiz-next { padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; font-family: var(--sans); transition: all 0.2s; display: none; }
+        .quiz-next:hover { background: var(--accent-dark); }
+        .quiz-next.show { display: block; }
+
+        /* ── Data Flow Diagram ── */
+        .dataflow { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; box-shadow: var(--shadow-sm); }
+        .dataflow-title { font-size: 0.72em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 24px; text-align: center; }
+        .dataflow-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .df-node { padding: 10px 18px; border-radius: 10px; font-size: 0.82em; font-weight: 600; white-space: nowrap; }
+        .df-node.user { background: var(--accent-soft); color: var(--accent); }
+        .df-node.platform { background: var(--amber-soft); color: var(--amber); }
+        .df-node.third { background: var(--red-soft); color: var(--red); }
+        .df-arrow { color: var(--text-secondary); font-size: 0.9em; opacity: 0.4; }
+
+        /* ── Checklist ── */
+        .checklist { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-sm); }
+        .checklist-title { font-size: 0.72em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+        .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88em; color: var(--text-secondary); line-height: 1.5; }
+        .check-item:last-child { border-bottom: none; }
+        .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+        .check-box.checked { background: var(--accent); border-color: var(--accent); }
+        .check-box.checked::after { content: ''; width: 6px; height: 10px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) translateY(-1px); }
+
+        /* ── Metric Cards ── */
+        .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 28px; text-align: center; box-shadow: var(--shadow-sm); transition: all 0.25s; }
+        .metric-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .metric-val { font-size: 2em; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+        .metric-label { font-size: 0.78em; color: var(--text-secondary); font-weight: 500; }
+
+        /* ── References ── */
+        .ref-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-sm); }
+        .ref-list h3 { font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 16px; }
+        .ref-list p { font-size: 0.82em; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.6; }
+        .ref-list a { color: var(--accent); text-decoration: none; }
+
+        /* ── Footer ── */
+        .footer { text-align: center; padding: 48px 24px; font-size: 0.75em; color: var(--text-secondary); border-top: 1px solid var(--border); }
         .footer a { color: var(--accent); text-decoration: none; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5em; }
+            .float-nav { display: none; }
+        }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2em; }
+            .hero { padding: 60px 20px; }
+            .section { padding: 60px 20px; }
+            .island, .quiz, .chart-wrap, .dataflow, .checklist { padding: 24px 20px; }
+        }
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Final Group Project<span class="badge">40%</span></div>
-            <div class="topbar-meta">Due Mar 28</div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ── Float Nav ── -->
+<nav class="float-nav" id="floatNav">
+    <a href="#what" title="What is a PLN"><span class="nav-tip">What is a PLN</span></a>
+    <a href="#platforms" title="Platforms"><span class="nav-tip">Platforms</span></a>
+    <a href="#identity" title="Digital Identity"><span class="nav-tip">Digital Identity</span></a>
+    <a href="#vr" title="V&R Framework"><span class="nav-tip">V&R Framework</span></a>
+    <a href="#inclusion" title="Inclusion"><span class="nav-tip">Inclusion</span></a>
+    <a href="#literacy" title="Media Literacy"><span class="nav-tip">Media Literacy</span></a>
+    <a href="#privacy" title="Privacy"><span class="nav-tip">Privacy & Data</span></a>
+    <a href="#ai" title="AI"><span class="nav-tip">AI & PLN</span></a>
+    <a href="#metrics" title="Metrics"><span class="nav-tip">Success Metrics</span></a>
+</nav>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="800">
+        <div class="hero-label">EDCI 338 Final Project</div>
+        <h1>Building Your <span>Personal Learning Network</span></h1>
+        <p class="hero-sub">An interactive guide to creating, managing, and growing a PLN that supports your professional and personal development in a connected world.</p>
+        <a class="hero-cta" href="#what">
+            Start Exploring
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+        <div class="hero-meta">
+            <span>Andy Hu</span>
+            <span>March 2026</span>
+            <span>University of Victoria</span>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F465;</div>
-            <h2>Coming Soon</h2>
-            <p>Group PLN walkthrough — platforms, practices, and digital identity</p>
+    <div class="hero-scroll">
+        <svg width="24" height="24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 1. WHAT IS A PLN -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="what">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">1</div>
+        <div class="section-tag">Foundation</div>
+        <h2>What Is a Personal Learning Network?</h2>
+        <p class="section-desc">A PLN is a network of people, resources, and tools that supports ongoing professional learning through social media and digital platforms.</p>
+    </div>
+
+    <div class="cols-2" data-aos="fade-up">
+        <div class="island">
+            <p>Rajagopal et al. (2012) define a PLN as a system where someone "intentionally builds, maintains and activates contacts within her personal network for the purpose of improving her learning." The key word is intentionally. A PLN is not the list of accounts you follow. It is the deliberate curation of connections that help you grow professionally.</p>
+            <p>The theoretical foundation is connectivism, which argues that learning in the digital age happens through networks rather than through individual knowledge acquisition. Your ability to find, evaluate, and connect information across sources is more valuable than memorizing any single body of knowledge (Siemens, 2005).</p>
+        </div>
+        <div class="island">
+            <p>A PLN differs from a social network in purpose. A social network connects you to people you know. A PLN connects you to people you learn from. The overlap exists, but the intention is different. Every person you follow, every community you join, and every platform you use is a design decision about what your learning environment looks like.</p>
+            <p>Throughout this guide, we will explore how to build a PLN that is diverse, media-literate, privacy-conscious, and professionally effective, drawing on the frameworks and research covered in EDCI 338.</p>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 2. PLATFORMS -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="platforms">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">2</div>
+        <div class="section-tag">Platform Landscape</div>
+        <h2>Choosing Your Platforms</h2>
+        <p class="section-desc">Each platform emphasizes different communicative traits. Understanding these differences helps you build a PLN that serves your specific learning goals.</p>
     </div>
+
+    <div class="cols-4" data-aos="fade-up" id="platformCards">
+        <div class="platform-card active" onclick="showPlatform(0)">
+            <div class="p-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+            <strong>LinkedIn</strong>
+            <span>Professional networking</span>
+        </div>
+        <div class="platform-card" onclick="showPlatform(1)">
+            <div class="p-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+            <strong>GitHub</strong>
+            <span>Code & collaboration</span>
+        </div>
+        <div class="platform-card" onclick="showPlatform(2)">
+            <div class="p-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></div>
+            <strong>Twitter/X</strong>
+            <span>Real-time discourse</span>
+        </div>
+        <div class="platform-card" onclick="showPlatform(3)">
+            <div class="p-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+            <strong>YouTube</strong>
+            <span>Long-form learning</span>
+        </div>
+    </div>
+
+    <div class="chart-wrap" data-aos="fade-up" id="radarWrap">
+        <canvas id="radarChart"></canvas>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 3. DIGITAL IDENTITY -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="identity">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">3</div>
+        <div class="section-tag">Digital Identity</div>
+        <h2>Managing Your Online Presence</h2>
+        <p class="section-desc">Your digital identity is everything you post, share, how you engage, and how you treat other people online (Stoller, 2016). It is your footprint on the web.</p>
+    </div>
+
+    <div class="toggle-demo" data-aos="fade-up">
+        <div class="toggle-bar">
+            <button class="toggle-btn active" onclick="toggleIdentity('controlled')">Controlled Presence</button>
+            <button class="toggle-btn" onclick="toggleIdentity('uncontrolled')">Uncontrolled Presence</button>
+            <button class="toggle-btn" onclick="toggleIdentity('strategy')">Management Strategy</button>
+        </div>
+        <div class="toggle-content">
+            <div class="toggle-panel active" id="panel-controlled">
+                <p style="font-size:0.93em;color:var(--text-secondary);line-height:1.8;margin-bottom:14px;">Controlled presence is content you intentionally create and publish. These are the building blocks of your professional digital identity:</p>
+                <div class="cols-3" style="margin-top:16px;">
+                    <div style="padding:16px;background:var(--accent-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--accent);">Professional profiles</div>
+                    <div style="padding:16px;background:var(--accent-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--accent);">Published content</div>
+                    <div style="padding:16px;background:var(--accent-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--accent);">Code contributions</div>
+                    <div style="padding:16px;background:var(--accent-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--accent);">Portfolio work</div>
+                    <div style="padding:16px;background:var(--accent-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--accent);">Conference talks</div>
+                    <div style="padding:16px;background:var(--accent-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--accent);">Blog posts</div>
+                </div>
+            </div>
+            <div class="toggle-panel" id="panel-uncontrolled">
+                <p style="font-size:0.93em;color:var(--text-secondary);line-height:1.8;margin-bottom:14px;">Uncontrolled presence exists without your direct input. danah boyd (2012) argues that privacy is no longer an individual property because others' decisions about your data affect your identity:</p>
+                <div class="cols-3" style="margin-top:16px;">
+                    <div style="padding:16px;background:var(--amber-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--amber);">Tagged photos</div>
+                    <div style="padding:16px;background:var(--amber-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--amber);">Client reviews</div>
+                    <div style="padding:16px;background:var(--amber-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--amber);">Forum mentions</div>
+                    <div style="padding:16px;background:var(--amber-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--amber);">Cached profiles</div>
+                    <div style="padding:16px;background:var(--amber-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--amber);">Tracking data</div>
+                    <div style="padding:16px;background:var(--amber-soft);border-radius:10px;text-align:center;font-size:0.85em;font-weight:600;color:var(--amber);">Search results</div>
+                </div>
+            </div>
+            <div class="toggle-panel" id="panel-strategy">
+                <p style="font-size:0.93em;color:var(--text-secondary);line-height:1.8;margin-bottom:14px;">Spracklen (2015) frames social media as a leisure space where identity is actively constructed. Managing the convergence of personal and professional identities requires deliberate platform strategy:</p>
+                <div class="cols-2" style="margin-top:16px;">
+                    <div style="padding:20px;background:var(--green-soft);border-radius:10px;font-size:0.85em;color:var(--green);">
+                        <strong style="display:block;margin-bottom:6px;">Treat platforms differently.</strong>
+                        LinkedIn for industry content. GitHub for code. Twitter for personality and ideas. Instagram for personal. Each serves a distinct identity function.
+                    </div>
+                    <div style="padding:20px;background:var(--green-soft);border-radius:10px;font-size:0.85em;color:var(--green);">
+                        <strong style="display:block;margin-bottom:6px;">Audit regularly.</strong>
+                        Your digital identity is doing a job interview 24/7. The question is not whether to have a presence, but whether the one you have is working for you.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 4. V&R FRAMEWORK -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="vr">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">4</div>
+        <div class="section-tag">Visitor &amp; Resident</div>
+        <h2>Mapping Your Digital Practices</h2>
+        <p class="section-desc">White and Le Cornu (2017) propose a more useful model than "digital native/immigrant." Instead, people are Visitors (task-based, no trace) or Residents (identity-building, persistent presence) across different platforms.</p>
+    </div>
+
+    <div class="vr-builder" data-aos="fade-up">
+        <div class="vr-builder-title">Interactive V&R Map (drag to reposition)</div>
+        <div class="vr-grid" id="vrGrid">
+            <div class="vr-axis top">Resident</div>
+            <div class="vr-axis bottom">Visitor</div>
+            <div class="vr-axis left">Personal</div>
+            <div class="vr-axis right">Professional</div>
+            <div class="vr-chip prof" style="top:18%;left:78%;" id="chip-github">GitHub</div>
+            <div class="vr-chip prof" style="top:22%;left:70%;" id="chip-linkedin">LinkedIn</div>
+            <div class="vr-chip prof" style="top:32%;left:55%;" id="chip-twitter">Twitter/X</div>
+            <div class="vr-chip pers" style="top:20%;left:25%;" id="chip-instagram">Instagram</div>
+            <div class="vr-chip pers" style="top:25%;left:32%;" id="chip-discord">Discord</div>
+            <div class="vr-chip pers" style="top:75%;left:22%;" id="chip-youtube">YouTube</div>
+            <div class="vr-chip pers" style="top:80%;left:32%;" id="chip-reddit">Reddit</div>
+            <div class="vr-chip prof" style="top:72%;left:75%;" id="chip-docs">Docs/APIs</div>
+        </div>
+    </div>
+
+    <div class="island" style="margin-top:24px;" data-aos="fade-up">
+        <p>The V&R framework reveals patterns that platform lists cannot. A professional who is a Resident on GitHub (contributing code daily, building reputation through commits) but a Visitor on YouTube (watching tutorials, leaving no trace) uses the same internet in fundamentally different ways across those two platforms. Mapping these modes of engagement helps identify where your PLN is strong and where it has gaps.</p>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 5. INCLUSION -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="inclusion">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">5</div>
+        <div class="section-tag">Inclusion &amp; Diversity</div>
+        <h2>Building an Inclusive PLN</h2>
+        <p class="section-desc">Dr. Shelley Moore (2021) argues that inclusion is not assimilation. It is finding balance between communities of identity and communities of diversity.</p>
+    </div>
+
+    <div class="cols-2" data-aos="fade-up">
+        <div class="island">
+            <p>The most valuable PLNs are not echo chambers of agreement. They are networks where different perspectives collide constructively. Obama's Stanford address (2022) warned that social media platforms can fragment discourse into "silos of affirmation" unless users deliberately seek diverse voices.</p>
+            <p>Clark and Aufderheide (2009) call for media platforms that are "open, dynamic, and participatory." The same principle applies to your PLN: it should amplify views you have not encountered, not just validate the ones you already hold.</p>
+        </div>
+        <div class="checklist" id="diversityChecklist">
+            <div class="checklist-title">PLN Diversity Audit</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I follow people from industries outside my own</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> My network includes voices from different geographic regions</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I engage with content that challenges my assumptions</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I follow educators, researchers, and policy makers</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> My feed includes both agreement and productive disagreement</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I have sought out Canadian sources and perspectives</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 6. MEDIA LITERACY -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="literacy">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">6</div>
+        <div class="section-tag">Media Literacy</div>
+        <h2>Evaluating Information in Your PLN</h2>
+        <p class="section-desc">Media literacy is the ability to critically analyze, evaluate, and create media (Trilling &amp; Fadel, 2009). In a PLN context, it determines whether your network makes you smarter or just more confident.</p>
+    </div>
+
+    <div class="island" data-aos="fade-up" style="margin-bottom:24px;">
+        <p>Hirst (2019) argues that fake news is not primarily an information problem. It is a business model. Content designed to provoke outrage generates clicks, which generates revenue. Understanding that supply chain is more useful than fact-checking individual articles. The real question is not "is this true?" but "why does this exist, and who profits from me sharing it?"</p>
+        <p>Sophie Lui, a Global BC news anchor, described social media as a place that "can eat away at my soul" when she follows accounts out of obligation rather than value. A media-literate PLN is one where you follow sources because they make you think, not because the algorithm put them in front of you.</p>
+    </div>
+
+    <!-- Media Literacy Quiz -->
+    <div class="quiz" data-aos="fade-up" id="mediaQuiz">
+        <div class="quiz-title">Test Your Media Literacy</div>
+        <div class="quiz-progress" id="quizProgress"></div>
+        <div id="quizContainer"></div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 7. PRIVACY -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="privacy">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">7</div>
+        <div class="section-tag">Privacy &amp; Data</div>
+        <h2>The Cost of Connection</h2>
+        <p class="section-desc">Every PLN platform is a data relationship. In Canada, PIPEDA governs how your personal information is collected, used, and disclosed.</p>
+    </div>
+
+    <div class="dataflow" data-aos="fade-up" style="margin-bottom:24px;">
+        <div class="dataflow-title">Where Your Data Goes</div>
+        <div class="dataflow-row">
+            <div class="df-node user">You</div>
+            <span class="df-arrow">&rarr;</span>
+            <div class="df-node platform">Platform</div>
+            <span class="df-arrow">&rarr;</span>
+            <div class="df-node third">Advertisers</div>
+        </div>
+        <div class="dataflow-row">
+            <div class="df-node user">Your Content</div>
+            <span class="df-arrow">&rarr;</span>
+            <div class="df-node platform">Algorithm</div>
+            <span class="df-arrow">&rarr;</span>
+            <div class="df-node third">Behavioral Profile</div>
+        </div>
+        <div class="dataflow-row">
+            <div class="df-node user">Your Network</div>
+            <span class="df-arrow">&rarr;</span>
+            <div class="df-node platform">Social Graph</div>
+            <span class="df-arrow">&rarr;</span>
+            <div class="df-node third">Data Brokers</div>
+        </div>
+    </div>
+
+    <div class="cols-2" data-aos="fade-up">
+        <div class="island">
+            <p>PIPEDA requires organizations to get consent before collecting personal information, collect only what is necessary, and allow users to access and correct their data. But in practice, the patchwork of federal (PIPEDA), provincial (BC's FIPPA, Alberta's PIPA), and sector-specific regulations means your data is subject to different rules depending on where the platform is hosted and who is accessing it.</p>
+            <p>The DAIS report on generative AI and youth privacy (Kwok &amp; Tessono, 2025) highlights that existing privacy frameworks were not designed for AI systems that build predictive profiles from behavioral data at scale.</p>
+        </div>
+        <div class="island">
+            <p>The tension between privacy and PLN effectiveness is real. You cannot build a professional network while remaining invisible. The willingness to be searchable, attributable, and publicly engaged is what makes a PLN functional. The question is not whether to accept this trade-off, but whether you are making it with full awareness of what you are giving up.</p>
+            <p>When your institution directs you to use a specific platform, ask: where is the data hosted? Who has access? What happens to it after the course ends? These are not paranoid questions. They are responsible ones.</p>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 8. AI -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="ai">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">8</div>
+        <div class="section-tag">AI &amp; Social Media</div>
+        <h2>AI in Your PLN</h2>
+        <p class="section-desc">AI is reshaping how content is created, distributed, and consumed in every PLN. The question is whether you are using it critically or being used by it.</p>
+    </div>
+
+    <div class="island" data-aos="fade-up" style="margin-bottom:24px;">
+        <p>Estaiteyeh and Mindzak (2025) found that Canadian teacher candidates were generally inclined to use AI tools themselves but expressed negative views toward their students using the same tools. This inconsistency reveals a tension that exists across every profession: we adopt tools before we understand them, and we hold others to standards we do not apply to ourselves.</p>
+        <p>MediaSmarts warns that AI-generated content has grown faster than the public's ability to critically assess it. The gap between production capacity and literacy is the core challenge for digital citizenship. "Doomscrolling now includes AI slop," as the course instructor put it. A responsible PLN requires the ability to distinguish between human insight and synthetic content.</p>
+    </div>
+
+    <div class="cols-3" data-aos="fade-up">
+        <div class="metric-card">
+            <div class="metric-val">77%</div>
+            <div class="metric-label">of Canadian students used ChatGPT (Janzen et al., 2024)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val">72%</div>
+            <div class="metric-label">used it specifically for coursework</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val">27%</div>
+            <div class="metric-label">of Ontario educators have never used AI tools</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 9. METRICS -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="metrics">
+    <div class="section-header" data-aos="fade-up">
+        <div class="section-num">9</div>
+        <div class="section-tag">Measuring Success</div>
+        <h2>Is Your PLN Working?</h2>
+        <p class="section-desc">Qualman (2012) argues that digital leadership is about creating value for others, not building the biggest following. The metrics that matter are about learning, not likes.</p>
+    </div>
+
+    <div class="cols-2" data-aos="fade-up">
+        <div class="island">
+            <p>Hermida (2014) argues that sharing is a fundamental human behavior that social media amplified, not created. We share to process our own thinking, to help others, and to strengthen social bonds. The best PLN is one where sharing is the learning, not just a channel for distributing what you already know.</p>
+            <p>A PLN is successful when it consistently exposes you to ideas you would not have found on your own, connects you to people who challenge your thinking, and gives you a platform to contribute back to your professional community.</p>
+        </div>
+        <div class="checklist">
+            <div class="checklist-title">PLN Health Check</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I learned something new from my network this week</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I contributed something useful to my network this week</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> Someone in my network made me reconsider an assumption</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I can name three people I follow for perspectives different from mine</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> My platform choices are deliberate, not habitual</div>
+            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I can explain why I use each platform in my PLN</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="section-divider-line"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- REFERENCES -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="section" id="references">
+    <div class="ref-list" data-aos="fade-up">
+        <h3>References</h3>
+        <p>boyd, d. (2012). Networked privacy. <em>Surveillance &amp; Society, 10</em>(3/4), 348-350.</p>
+        <p>Clark, J., &amp; Aufderheide, P. (2009). A new vision for public media. In <em>Media and social justice</em>. Palgrave Macmillan.</p>
+        <p>Couros, A. (2010). Developing personal learning networks for open and social learning. In G. Veletsianos (Ed.), <em>Emerging technologies in distance education</em>. AU Press.</p>
+        <p>Estaiteyeh, M., &amp; Mindzak, M. (2025). Building AI literacy in pre-service teacher education in Canada. <em>Journal of Teaching and Learning, 19</em>(4), 135-154.</p>
+        <p>Hermida, A. (2014). <em>Tell everyone: Why we share and why it matters</em>. Doubleday Canada.</p>
+        <p>Hirst, M. (2019). Journalism in a "post-truth" world. In <em>Navigating social journalism</em>. Routledge.</p>
+        <p>Kwok, T., &amp; Tessono, C. (2025). (Gen)eration AI: Safeguarding youth privacy. The Dais.</p>
+        <p>MediaSmarts. (2025). Wait... what? Media literacy week highlights growing concern over AI-driven misinformation.</p>
+        <p>Moore, S. (2021). Inclusion is not assimilation [Video]. Five More Minutes. YouTube.</p>
+        <p>Obama, B. (2022). Community communications [Address]. Stanford University.</p>
+        <p>Qualman, E. (2012). <em>Digital leader: 5 simple keys to success and influence</em>. McGraw-Hill.</p>
+        <p>Rajagopal, K., Joosten-ten Brinke, D., Van Bruggen, J., &amp; Sloep, P. B. (2012). Understanding personal learning networks. <em>First Monday, 17</em>(1).</p>
+        <p>Spracklen, K. (2015). Identity making and social media. In <em>Digital leisure, the internet and popular culture</em>. Palgrave Macmillan.</p>
+        <p>Stoller, E. (2016). What is digital identity? [Video]. YouTube.</p>
+        <p>Trilling, B., &amp; Fadel, C. (2009). <em>21st century skills: Learning for life in our times</em>. Jossey-Bass.</p>
+        <p>White, D. S., &amp; Le Cornu, A. (2017). Using 'Visitors and Residents' to visualise digital practices. <em>First Monday, 22</em>(8).</p>
+    </div>
+</div>
+
+<div class="footer">
+    EDCI 338 Final Project &middot; Building Your PLN &middot; University of Victoria &middot; 2026
+    <br>Andy Hu &middot; Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCRIPTS -->
+<!-- ══════════════════════════════════════════════ -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+AOS.init({ once: true, offset: 80, duration: 600 });
+
+// ── Progress Bar ──
+window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+});
+
+// ── Float Nav ──
+const floatNav = document.getElementById('floatNav');
+const sectionIds = ['what','platforms','identity','vr','inclusion','literacy','privacy','ai','metrics'];
+const navDots = floatNav.querySelectorAll('a');
+
+window.addEventListener('scroll', () => {
+    floatNav.classList.toggle('visible', window.scrollY > window.innerHeight * 0.8);
+    let current = '';
+    sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 300) current = id;
+    });
+    navDots.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+});
+
+// ── Platform Radar Chart ──
+const platformData = [
+    { name: 'LinkedIn', data: [5, 4, 3, 5, 2, 4], color: '#0a66c2' },
+    { name: 'GitHub', data: [4, 5, 2, 4, 5, 3], color: '#333' },
+    { name: 'Twitter/X', data: [3, 2, 5, 3, 3, 5], color: '#1da1f2' },
+    { name: 'YouTube', data: [2, 3, 4, 2, 4, 2], color: '#ff0000' }
+];
+
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+let radarChart = new Chart(radarCtx, {
+    type: 'radar',
+    data: {
+        labels: ['Professional Reach', 'Depth of Content', 'Real-time Discourse', 'Privacy Control', 'Learning Value', 'Community Building'],
+        datasets: [{
+            label: platformData[0].name,
+            data: platformData[0].data,
+            backgroundColor: 'rgba(79,70,229,0.15)',
+            borderColor: 'rgba(79,70,229,0.8)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(79,70,229,1)',
+            pointRadius: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: { r: { beginAtZero: true, max: 5, ticks: { stepSize: 1, font: { size: 10 } }, pointLabels: { font: { size: 11, weight: '500' } }, grid: { color: 'rgba(0,0,0,0.06)' } } },
+        plugins: { legend: { display: false } }
+    }
+});
+
+function showPlatform(idx) {
+    document.querySelectorAll('.platform-card').forEach((c, i) => c.classList.toggle('active', i === idx));
+    radarChart.data.datasets[0].label = platformData[idx].name;
+    radarChart.data.datasets[0].data = platformData[idx].data;
+    radarChart.update();
+}
+
+// ── Identity Toggle ──
+function toggleIdentity(panel) {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.toggle-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('panel-' + panel).classList.add('active');
+}
+
+// ── V&R Drag ──
+document.querySelectorAll('.vr-chip').forEach(chip => {
+    let isDragging = false, startX, startY, startLeft, startTop;
+    const grid = document.getElementById('vrGrid');
+
+    chip.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startLeft = chip.offsetLeft;
+        startTop = chip.offsetTop;
+        chip.style.zIndex = 10;
+    });
+
+    document.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX, dy = e.clientY - startY;
+        const newLeft = Math.max(0, Math.min(grid.clientWidth - chip.offsetWidth, startLeft + dx));
+        const newTop = Math.max(0, Math.min(grid.clientHeight - chip.offsetHeight, startTop + dy));
+        chip.style.left = (newLeft / grid.clientWidth * 100) + '%';
+        chip.style.top = (newTop / grid.clientHeight * 100) + '%';
+    });
+
+    document.addEventListener('mouseup', () => { isDragging = false; chip.style.zIndex = 2; });
+});
+
+// ── Media Literacy Quiz ──
+const quizData = [
+    {
+        q: "An article claims a Canadian politician endorsed a controversial product. The article has no author byline, the domain was registered 2 weeks ago, and the 'evidence' is a screenshot of a tweet. What is your best first step?",
+        opts: ["Share it to warn others", "Check if the politician's official accounts have addressed it", "Assume it is AI-generated and ignore it", "Report it to the platform"],
+        correct: 1,
+        feedback: {
+            correct: "Lateral reading (checking other sources about the claim rather than evaluating the article itself) is the most effective verification strategy. Official channels are the fastest way to confirm or deny a claim about a public figure.",
+            wrong: "Sharing unverified content amplifies it regardless of intent. The best first step is lateral reading: check other sources, especially the subject's official channels, before taking any action."
+        }
+    },
+    {
+        q: "Which of the following best describes Martin Hirst's analysis of the 'political economy of fake news'?",
+        opts: ["Fake news is caused by low media literacy among consumers", "Misinformation is primarily a problem of social media algorithms", "Fake news is a business model driven by economic incentives for engagement", "Fake news can be solved through better fact-checking organizations"],
+        correct: 2,
+        feedback: {
+            correct: "Hirst argues that fake news persists because it is profitable. Content designed to provoke outrage generates clicks and ad revenue. Understanding the economic incentive structure is more useful than addressing individual false claims.",
+            wrong: "Hirst's core argument is that fake news is an economic phenomenon, not just an information or literacy problem. It exists because it is profitable. The business model drives the production."
+        }
+    },
+    {
+        q: "A beautifully produced infographic about Canadian healthcare statistics is circulating on social media. The data looks credible, the design is professional, and it cites 'Statistics Canada.' What should make you pause?",
+        opts: ["Nothing, Statistics Canada is a credible source", "Professional design always indicates credibility", "The citation should link to the specific dataset, not just the organization name", "Infographics cannot contain misinformation"],
+        correct: 2,
+        feedback: {
+            correct: "Citing an organization name without linking to the specific dataset is a red flag. Legitimate citations point to specific reports, tables, or publications. Anyone can claim 'Statistics Canada' as a source without actually using their data.",
+            wrong: "Naming a credible organization is not the same as providing a verifiable citation. Always look for links to specific datasets, publication dates, and methodology. Professional design is not evidence of accuracy."
+        }
+    }
+];
+
+let currentQ = 0;
+function renderQuiz() {
+    const prog = document.getElementById('quizProgress');
+    prog.innerHTML = quizData.map((_, i) => `<div class="quiz-dot ${i < currentQ ? 'done' : i === currentQ ? 'current' : ''}"></div>`).join('');
+
+    if (currentQ >= quizData.length) {
+        document.getElementById('quizContainer').innerHTML = `<div style="text-align:center;padding:20px;"><div style="font-size:1.5em;font-weight:700;color:var(--green);margin-bottom:8px;">Quiz Complete</div><p style="color:var(--text-secondary);font-size:0.9em;">You have completed the media literacy assessment. Remember: the goal is not to be right every time, but to develop the habit of questioning before sharing.</p></div>`;
+        return;
+    }
+
+    const q = quizData[currentQ];
+    document.getElementById('quizContainer').innerHTML = `
+        <div class="quiz-q">${q.q}</div>
+        <div class="quiz-options">${q.opts.map((o, i) => `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}</div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="quiz-nav"><button class="quiz-next" id="quizNext" onclick="nextQ()">Next Question &rarr;</button></div>
+    `;
+}
+
+function answerQuiz(idx) {
+    const q = quizData[currentQ];
+    const opts = document.querySelectorAll('.quiz-opt');
+    opts.forEach((o, i) => {
+        o.classList.add('disabled');
+        if (i === q.correct) o.classList.add('correct');
+        if (i === idx && i !== q.correct) o.classList.add('wrong');
+    });
+    const fb = document.getElementById('quizFeedback');
+    fb.className = 'quiz-feedback show ' + (idx === q.correct ? 'correct' : 'wrong');
+    fb.textContent = idx === q.correct ? q.feedback.correct : q.feedback.wrong;
+    document.getElementById('quizNext').classList.add('show');
+}
+
+function nextQ() { currentQ++; renderQuiz(); }
+renderQuiz();
+</script>
+
 </body>
 </html>
