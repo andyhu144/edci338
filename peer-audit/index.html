@@ -3,64 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peer Blog Audit | EDCI 338</title>
+    <title>Peer Blog Audit | EDCI 338 | Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
-        .footer a { color: var(--accent); text-decoration: none; }
+        :root{--bg:#f8f9fa;--surface:#fff;--border:#e8eaed;--text:#1a1a2e;--text-secondary:#5f6368;--accent:#4f46e5;--accent-soft:#e0e7ff;--accent-dark:#3730a3;--hero-1:#1e1b4b;--hero-2:#4f46e5;--hero-3:#818cf8;--green:#059669;--green-soft:#d1fae5;--amber:#d97706;--amber-soft:#fef3c7;--sans:'Inter',-apple-system,system-ui,sans-serif;--shadow-sm:0 1px 4px rgba(0,0,0,.04);--shadow-md:0 4px 20px rgba(0,0,0,.06);--radius:20px}@media(prefers-color-scheme:dark){:root{--bg:#0c0e14;--surface:#161820;--border:#252830;--text:#e8eaed;--text-secondary:#9aa0a6;--accent-soft:#1e1b4b;--green-soft:#064e3b;--amber-soft:#78350f;--shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 20px rgba(0,0,0,.3)}}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1000;width:0%;transition:width .1s linear}.hero{position:relative;overflow:hidden;padding:100px 24px 88px;color:#fff}.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,var(--hero-1) 0%,var(--hero-2) 55%,var(--hero-3) 100%);background-size:200% 200%;animation:drift 10s ease infinite}.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(255,255,255,.07) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(255,255,255,.04) 0%,transparent 45%)}@keyframes drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto}.hero-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.82em;font-weight:500;margin-bottom:48px;transition:color .2s}.hero-back:hover{color:#fff}.hero h1{font-size:3em;font-weight:600;line-height:1.1;margin-bottom:40px}.hero-footer{display:flex;align-items:center;gap:16px;font-size:.8em;opacity:.5}.hero-footer .pill{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:5px 14px;border-radius:100px;font-weight:500}.hero-footer .dot{width:3px;height:3px;border-radius:50%;background:currentColor}.content{max-width:1080px;margin:0 auto;padding:64px 24px 80px}
+        .review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:24px}.review-header{padding:28px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}.review-avatar{width:48px;height:48px;border-radius:14px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.1em;font-weight:700;flex-shrink:0}.review-meta h3{font-size:1.05em;font-weight:600;color:var(--text);margin-bottom:2px}.review-meta .rm-sub{font-size:.8em;color:var(--text-secondary)}.review-meta .rm-sub a{color:var(--accent);text-decoration:none}.review-body{padding:28px 32px}.review-body h4{font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:12px;margin-top:24px}.review-body h4:first-child{margin-top:0}.review-body p{font-size:.9em;color:var(--text-secondary);line-height:1.8;margin-bottom:12px}.review-body p:last-child{margin-bottom:0}
+        .rubric{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}.rubric-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;box-shadow:var(--shadow-sm)}.rubric-score{font-size:1.8em;font-weight:800;margin-bottom:4px}.rubric-score.high{color:var(--green)}.rubric-score.mid{color:var(--amber)}.rubric-label{font-size:.72em;color:var(--text-secondary);font-weight:500}
+        .footer{text-align:center;padding:40px 24px;font-size:.75em;color:var(--text-secondary);border-top:1px solid var(--border)}.footer a{color:var(--accent);text-decoration:none}
+        @media(max-width:600px){.hero h1{font-size:2em}.hero{padding:64px 20px 56px}.content{padding:48px 20px 60px}.review-header,.review-body{padding:20px}.rubric{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Peer Blog Audit<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 12</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="hero"><div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+    <a class="hero-back" href="../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+    <h1>Peer Blog Audit</h1>
+    <div class="hero-footer"><span>Andy Hu</span><span class="dot"></span><span>March 2026</span><span class="dot"></span><span class="pill">Week 12</span></div>
+</div></div>
+
+<div class="content">
+
+    <div class="review-card" data-aos="fade-up">
+        <div class="review-header">
+            <div class="review-avatar">JD</div>
+            <div class="review-meta">
+                <h3>Blog Post #3: V&R Mapping &amp; Professional Digital Identity</h3>
+                <div class="rm-sub">by jdool &middot; <a href="https://jdooledci338.opened.ca/blog-post-3/" target="_blank">jdooledci338.opened.ca</a></div>
+            </div>
+        </div>
+        <div class="review-body">
+            <h4>Content Accuracy &amp; Understanding</h4>
+            <p>The post addresses all five required questions for the week and demonstrates a working understanding of how digital platforms function as professional networking tools. The distinction between LinkedIn as a job-focused platform and Facebook as a community and group-based networking tool is accurate and supported by personal experience. The point about Facebook groups being used by UVic clubs for updates is a practical example that grounds the theoretical concept of PLNs in something tangible.</p>
+            <p>The discussion of data privacy's effect on PLNs is sound in principle. The observation that private accounts limit professional discoverability captures the core tension between privacy and visibility that danah boyd (2012) explores in more academic terms. The group member quote about it being "harder to begin communicating with someone if they have a private account" is a useful real-world validation of that idea.</p>
+
+            <h4>Critical Thinking &amp; Depth</h4>
+            <p>The post would benefit from engaging more deeply with the course readings rather than relying primarily on personal experience and group discussion. For example, the section on digital identity mentions posting photos and reposting articles but does not reference Stoller's definition of digital identity or Spracklen's framework for how identity is constructed through social media participation. Connecting the personal observations to these theoretical frameworks would elevate the analysis from descriptive to analytical.</p>
+            <p>The employer assessment question is answered honestly but stays at the surface level. The statement "I don't believe that my social media presence would affect my employability" could be strengthened by considering the concept of context collapse, where content intended for one audience (friends) is encountered by another (employers). This is a core concept from the course that would add depth to the reflection.</p>
+
+            <h4>Positive Highlights</h4>
+            <p>The writing voice is authentic and approachable. The post reads like someone genuinely reflecting on their own practices rather than performing academic analysis, which is valuable in a reflective blog format. The mention of specific actions taken (updating LinkedIn, adding work experiences, reviewing club postings on Facebook) gives the reader concrete examples rather than abstract generalizations.</p>
+            <p>The V&R mapping exercise is mentioned with enthusiasm, and the personal graph was included as an attachment. This demonstrates engagement with the course material beyond the minimum requirements.</p>
+
+            <h4>Suggestions for Enhancement</h4>
+            <p>First, integrate at least two specific references to course readings. White and Le Cornu's Visitor and Resident framework is directly relevant to the V&R graph that was created, and citing their work would connect the practical exercise to its theoretical foundation. Second, the section on digital identity could reference Stoller's definition ("your presence online, everything you post, share, how you engage") to anchor the personal observations in course vocabulary.</p>
+            <p>Third, consider adding multimedia beyond the V&R graph. An embedded video, a screenshot comparison of a professional vs personal profile, or a linked resource about privacy settings would meet the course's expectation of media integration and make the post more visually engaging.</p>
+            <p>Finally, the post could explore the tension between personal and professional identity more critically. The current framing treats them as separate categories, but the course material (particularly Spracklen, 2015) argues that social media blurs these categories in ways that are not always under the user's control. Engaging with that complexity would push the reflection from good to excellent.</p>
+
+            <div class="rubric">
+                <div class="rubric-item" data-aos="fade-up" data-aos-delay="0">
+                    <div class="rubric-score high">4</div>
+                    <div class="rubric-label">Content Accuracy</div>
+                </div>
+                <div class="rubric-item" data-aos="fade-up" data-aos-delay="60">
+                    <div class="rubric-score mid">3</div>
+                    <div class="rubric-label">Critical Thinking</div>
+                </div>
+                <div class="rubric-item" data-aos="fade-up" data-aos-delay="120">
+                    <div class="rubric-score mid">3</div>
+                    <div class="rubric-label">Course Integration</div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F4AC;</div>
-            <h2>Coming Soon</h2>
-            <p>Constructive feedback and collaborative reflection on a peer's blog</p>
-        </div>
-    </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
-    </div>
+
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({once:true,offset:60});window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});</script>
 </body>
 </html>
