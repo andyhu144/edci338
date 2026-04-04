@@ -3,64 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Summation | EDCI 338</title>
+    <title>Blog Summation | EDCI 338 | Andy Hu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        :root {
-            --bg: #fafafa; --surface: #ffffff; --border: #e5e7eb;
-            --text: #111827; --text-secondary: #6b7280;
-            --accent: #4f46e5; --accent-light: #e0e7ff; --accent-dark: #3730a3;
-            --hero-1: #1e1b4b; --hero-2: #4f46e5; --hero-3: #818cf8;
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --radius: 16px;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-                --text: #f1f5f9; --text-secondary: #94a3b8; --accent-light: #1e1b4b;
-                --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
-            }
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        .topbar { position: relative; overflow: hidden; padding: 32px 24px 28px; color: white; }
-        .topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--hero-1) 0%, var(--hero-2) 50%, var(--hero-3) 100%); background-size: 200% 200%; animation: g 8s ease infinite; }
-        @keyframes g { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        .topbar-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85em; font-weight: 500; margin-bottom: 16px; transition: color 0.2s; }
-        .back-link:hover { color: white; }
-        .topbar-title { font-size: 1.8em; font-weight: 600; margin-bottom: 6px; }
-        .topbar-meta { font-size: 0.85em; opacity: 0.8; }
-        .badge { display: inline-block; font-size: 0.65em; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.18); vertical-align: middle; margin-left: 8px; letter-spacing: 0.5px; }
-        .main { max-width: 800px; margin: 0 auto; padding: 40px 24px; }
-        .placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; }
-        .placeholder-icon { font-size: 3em; margin-bottom: 16px; opacity: 0.3; }
-        .placeholder h2 { font-size: 1.1em; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-        .placeholder p { font-size: 0.9em; color: var(--text-secondary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .footer { text-align: center; padding: 32px 24px; font-size: 0.75em; color: var(--text-secondary); }
-        .footer a { color: var(--accent); text-decoration: none; }
+        :root{--bg:#f8f9fa;--surface:#fff;--border:#e8eaed;--text:#1a1a2e;--text-secondary:#5f6368;--accent:#4f46e5;--accent-soft:#e0e7ff;--accent-dark:#3730a3;--hero-1:#1e1b4b;--hero-2:#4f46e5;--hero-3:#818cf8;--sans:'Inter',-apple-system,system-ui,sans-serif;--shadow-sm:0 1px 4px rgba(0,0,0,.04);--shadow-md:0 4px 20px rgba(0,0,0,.06);--radius:20px}@media(prefers-color-scheme:dark){:root{--bg:#0c0e14;--surface:#161820;--border:#252830;--text:#e8eaed;--text-secondary:#9aa0a6;--accent-soft:#1e1b4b;--shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 20px rgba(0,0,0,.3)}}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7}.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:1000;width:0%;transition:width .1s linear}.sticky-nav{position:fixed;top:24px;right:24px;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-md);font-size:.75em;opacity:0;transform:translateY(-8px);transition:all .3s ease;pointer-events:none}.sticky-nav.visible{opacity:1;transform:translateY(0);pointer-events:all}.sticky-nav-title{font-weight:700;text-transform:uppercase;letter-spacing:1.5px;font-size:.85em;color:var(--text-secondary);margin-bottom:10px}.sticky-nav a{display:block;padding:5px 0;color:var(--text-secondary);text-decoration:none;font-weight:500;transition:color .2s;border-left:2px solid transparent;padding-left:10px}.sticky-nav a:hover{color:var(--text)}.sticky-nav a.active{color:var(--accent);border-left-color:var(--accent)}.hero{position:relative;overflow:hidden;padding:100px 24px 88px;color:#fff}.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,var(--hero-1) 0%,var(--hero-2) 55%,var(--hero-3) 100%);background-size:200% 200%;animation:drift 10s ease infinite}.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(255,255,255,.07) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(255,255,255,.04) 0%,transparent 45%)}@keyframes drift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto}.hero-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.82em;font-weight:500;margin-bottom:48px;transition:color .2s}.hero-back:hover{color:#fff}.hero h1{font-size:3em;font-weight:600;line-height:1.1;margin-bottom:40px}.hero-footer{display:flex;align-items:center;gap:16px;font-size:.8em;opacity:.5}.hero-footer .pill{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:5px 14px;border-radius:100px;font-weight:500}.hero-footer .dot{width:3px;height:3px;border-radius:50%;background:currentColor}.content{max-width:1080px;margin:0 auto;padding:64px 24px 80px}.section-2col{display:grid;grid-template-columns:240px 1fr;gap:48px}.section-aside{position:sticky;top:100px;align-self:start}.section-aside .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.section-aside .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}.section-aside h2{font-size:1.2em;font-weight:600;line-height:1.3;color:var(--text);margin:0}.section-body{display:flex;flex-direction:column;gap:16px}.section-full-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}.section-full-header .section-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}.section-full-header .header-text{display:flex;flex-direction:column;gap:4px}.section-full-header .section-tag{font-size:.65em;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}.section-full-header h2{font-size:1.2em;font-weight:600;margin:0}.island{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}.island p{margin-bottom:14px;font-size:.93em;color:var(--text-secondary);line-height:1.8}.island p:last-child{margin-bottom:0}p{font-size:.93em;color:var(--text-secondary);line-height:1.8}.divider{max-width:1080px;margin:56px auto;padding:0 24px}.divider-line{height:1px;background:var(--border)}
+        .goal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}.goal-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 20px;box-shadow:var(--shadow-sm);transition:all .25s}.goal-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-md)}.goal-card .g-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700;margin-bottom:12px}.goal-card strong{display:block;font-size:.88em;margin-bottom:6px;color:var(--text)}.goal-card span{font-size:.78em;color:var(--text-secondary);line-height:1.5}
+        .ref-list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow-sm)}.ref-list h3{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);margin-bottom:16px}.ref-list p{font-size:.82em;color:var(--text-secondary);margin-bottom:8px;line-height:1.6}.ref-list a{color:var(--accent);text-decoration:none}.footer{text-align:center;padding:40px 24px;font-size:.75em;color:var(--text-secondary);border-top:1px solid var(--border)}.footer a{color:var(--accent);text-decoration:none}
+        @media(max-width:900px){.section-2col{grid-template-columns:1fr;gap:24px}.section-aside{position:static}.goal-grid{grid-template-columns:1fr}.sticky-nav{display:none}}@media(max-width:600px){.hero h1{font-size:2em}.hero{padding:64px 20px 56px}.content{padding:48px 20px 60px}.island{padding:24px 20px}}
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="topbar-content">
-            <a class="back-link" href="../">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                Home
-            </a>
-            <div class="topbar-title">Blog Summation<span class="badge">35%</span></div>
-            <div class="topbar-meta">Week 13</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="sticky-nav" id="stickyNav"><div class="sticky-nav-title">On this page</div><a href="#starting">Starting Point</a><a href="#growth">Growth</a><a href="#canadian">Canadian Context</a><a href="#forward">Forward Goals</a><a href="#closing">Closing</a></nav>
+
+<div class="hero"><div class="hero-inner" data-aos="fade-up" data-aos-duration="600">
+    <a class="hero-back" href="../"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> EDCI 338</a>
+    <h1>Blog Summation</h1>
+    <div class="hero-footer"><span>Andy Hu</span><span class="dot"></span><span>March 2026</span><span class="dot"></span><span class="pill">Week 13 &middot; Final Post</span></div>
+</div></div>
+
+<div class="content">
+    <div class="section-2col" id="starting" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <span class="section-tag">Initial Goals</span>
+            <h2>Where I Started</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>At the start of the term, my understanding of social media in professional contexts was entirely practical. I used platforms to promote work, connect with other developers, and stay current in my industry. I had a functional PLN without knowing the term for it. What I lacked was any theoretical framework for understanding why certain approaches to digital presence worked better than others, what the structural implications of platform choices were, and how the same tools that enable professional growth also create privacy, equity, and literacy challenges.</p>
+                <p>My initial goals were straightforward: understand the theory behind what I was already doing, and identify the gaps in how I was doing it. I was not expecting the course to change my behaviour significantly. I assumed I would learn some vocabulary, confirm some instincts, and move on. That was not what happened.</p>
+            </div>
         </div>
     </div>
-    <div class="main">
-        <div class="placeholder">
-            <div class="placeholder-icon">&#x1F4CB;</div>
-            <h2>Coming Soon</h2>
-            <p>Final comprehensive reflection on learning journey and growth</p>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="growth" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
+            <span class="section-tag">Growth &amp; Reflection</span>
+            <h2>What Actually Changed</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>The V&R mapping exercise in week 3 was the first time I mapped my digital engagement as a system rather than a collection of accounts. Seeing the overlap between personal and professional platforms, and understanding that as identity convergence rather than just convenience, changed how I think about platform selection. I now treat each platform as a deliberate design choice about what kind of identity it supports, not just where the audience is.</p>
+                <p>The inclusion unit (week 4) was where the course became more than academic. Dr. Moore's framing of inclusion as balancing communities of identity with communities of diversity translated directly to how I build teams and select collaborators. The open-source analogy I used in that post was not just a rhetorical move. I have actually started thinking about contributor diversity in my projects through that lens.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="100">
+                <p>The media literacy and public discourse posts (weeks 5 and 8) deepened my understanding of the economic structures behind misinformation. Hirst's analysis of fake news as a business model, not just a truth problem, gave me a framework I use regularly now when evaluating information online. I no longer just ask "is this true?" I ask "who benefits from me believing this?" and "what engagement incentive produced this content?" Those are better questions.</p>
+                <p>The Sophie Lui interview grounded the public discourse discussion in reality. Hearing a working journalist describe the personal cost of public visibility, the daily calculation of what to post and what to withhold, the comb in the mail with no return address, made the theoretical discussion feel consequential. That interview influenced how I think about my own public presence more than any reading did.</p>
+            </div>
+            <div class="island" data-aos="fade-up" data-aos-delay="150">
+                <p>The most challenging posts were 7 through 9, where the course shifted to Canadian policy context. Writing about PIPEDA was not abstract for me because I deal with privacy compliance in my product work. But the course pushed me to think about privacy beyond my own compliance obligations and consider how educational institutions, students, and vulnerable populations are affected by the same data practices I implement. That broader perspective was new and necessary.</p>
+            </div>
         </div>
     </div>
-    <div class="footer">
-        EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026
-        <br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="canadian" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <span class="section-tag">Canadian Context</span>
+            <h2>Policy and Practice</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>The Canadian dimension of this course was one of its strongest features. Understanding PIPEDA, the patchwork of provincial privacy legislation (FIPPA in BC, PIPA in Alberta), and the jurisdictional complexity of cross-border data flows gave me practical knowledge I apply in my work. The DAIS reports on AI strategy and youth privacy highlighted how far behind Canadian policy is relative to the pace of technological change, which is a problem I see every day in the gap between what products can do and what regulations address.</p>
+                <p>Estaiteyeh and Mindzak's research on AI literacy in Canadian teacher education was the most directly useful Canadian source in the course. Their finding that teacher candidates were willing to use AI themselves but negative about their students using it captures a tension that exists across every sector, not just education. We adopt tools before we understand them, and we are more comfortable with our own use than with others' use. That inconsistency is worth examining honestly.</p>
+            </div>
+        </div>
     </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div id="forward" data-aos="fade-up">
+        <div class="section-full-header">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+            <div class="header-text">
+                <span class="section-tag">Forward-Looking Goals</span>
+                <h2>Three Commitments</h2>
+            </div>
+        </div>
+
+        <div class="goal-grid">
+            <div class="goal-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="g-num">1</div>
+                <strong>Diversify My PLN Deliberately</strong>
+                <span>Follow and engage with educators, policy researchers, and accessibility advocates outside of the tech industry. Audit my network quarterly for perspective gaps. Build connections with Canadian EdTech practitioners specifically.</span>
+            </div>
+            <div class="goal-card" data-aos="fade-up" data-aos-delay="60">
+                <div class="g-num">2</div>
+                <strong>Integrate Privacy by Design</strong>
+                <span>Apply PIPEDA principles not just as compliance requirements but as design values in every product decision. Document data flows transparently and give users meaningful control, not just consent checkboxes.</span>
+            </div>
+            <div class="goal-card" data-aos="fade-up" data-aos-delay="120">
+                <div class="g-num">3</div>
+                <strong>Contribute to Media Literacy</strong>
+                <span>Use my platform and technical skills to create or support resources that help people critically evaluate AI-generated content. Start with a blog series on how to identify synthetic media, aimed at non-technical audiences.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<div class="content" style="padding-top: 0;">
+    <div class="section-2col" id="closing" data-aos="fade-up">
+        <div class="section-aside">
+            <div class="section-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <span class="section-tag">Closing</span>
+            <h2>What I Am Taking With Me</h2>
+        </div>
+        <div class="section-body">
+            <div class="island" data-aos="fade-up" data-aos-delay="50">
+                <p>This course changed my relationship with social media from reactive to intentional. I came in as someone who used platforms effectively but unreflectively. I am leaving as someone who understands the systems I participate in, the trade-offs I am making by participating, and the responsibilities that come with building tools that other people use to construct their own digital identities.</p>
+                <p>The most important lesson is that a PLN is not a passive network you accumulate. It is an active system you design. The people you follow, the platforms you choose, the content you share, and the conversations you engage in are all design decisions. They shape what you learn, who you learn from, and how you are perceived professionally. Treating those decisions with the same intentionality I bring to product design is the most valuable shift in thinking I will carry forward from EDCI 338.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">EDCI 338 &middot; Social Media &amp; Personalized Learning &middot; University of Victoria &middot; 2026<br>Instructor: <a href="mailto:jessemiller@uvic.ca">Jesse Miller</a></div>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({once:true,offset:60});window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100+'%'});const nav=document.getElementById('stickyNav'),sections=document.querySelectorAll('[id]'),navLinks=nav.querySelectorAll('a');window.addEventListener('scroll',()=>{nav.classList.toggle('visible',window.scrollY>500);let c='';sections.forEach(s=>{if(s.id&&window.scrollY>=s.offsetTop-200)c=s.id});navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})})</script>
 </body>
 </html>
