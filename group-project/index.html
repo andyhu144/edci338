@@ -177,6 +177,12 @@
         .force-graph-legend span { display: flex; align-items: center; gap: 5px; }
         .force-graph-legend .lg-dot { width: 8px; height: 8px; border-radius: 50%; }
         .node-tooltip { position: absolute; background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 0.78em; font-weight: 500; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 10; white-space: nowrap; }
+        .g-btn { padding: 6px 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-size: 0.7em; font-weight: 600; color: var(--text-secondary); font-family: var(--sans); transition: all 0.15s; }
+        .g-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .g-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+        .g-btn-accent { background: var(--accent); color: white !important; border-color: var(--accent); }
+        .g-btn-accent:hover { background: var(--accent-dark); }
+        .connect-line { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 4; opacity: 0.6; pointer-events: none; }
 
         /* ── Hover Checklist ── */
         .hover-check-item { border-bottom: 1px solid var(--border); overflow: hidden; transition: all 0.3s ease; }
@@ -295,15 +301,59 @@
     <!-- Force-Directed PLN Network Graph -->
     <div class="force-graph-wrap" style="margin-top:32px;" data-aos="fade-up">
         <div class="force-graph-title">Your PLN as a Living Network</div>
+
+        <!-- Control Bar -->
+        <div id="graphControls" style="position:absolute;top:12px;right:16px;z-index:5;display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <button class="g-btn active" id="btnDrag" onclick="setMode('drag')" title="Drag nodes">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/></svg>
+            </button>
+            <button class="g-btn" id="btnConnect" onclick="setMode('connect')" title="Connect nodes">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 7h3a5 5 0 0 1 0 10h-3m-6 0H6a5 5 0 0 1 0-10h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </button>
+            <button class="g-btn" id="btnDelete" onclick="setMode('delete')" title="Delete nodes/links">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+            <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
+            <select id="nodeTypeSelect" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.72em;font-family:var(--sans);background:var(--surface);color:var(--text);cursor:pointer;">
+                <option value="1">Platform</option>
+                <option value="2">Community</option>
+                <option value="3">Person</option>
+            </select>
+            <input id="nodeNameInput" type="text" placeholder="Node name..." style="padding:5px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.72em;font-family:var(--sans);width:120px;background:var(--surface);color:var(--text);">
+            <button class="g-btn g-btn-accent" onclick="addNodeFromInput()" title="Add node">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+            </button>
+            <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
+            <button class="g-btn" onclick="zoomGraph(1.3)" title="Zoom in">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+            <button class="g-btn" onclick="zoomGraph(0.7)" title="Zoom out">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+            <button class="g-btn" onclick="resetGraph()" title="Reset layout">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            </button>
+        </div>
+
+        <!-- Mode indicator -->
+        <div id="modeIndicator" style="position:absolute;bottom:44px;left:20px;z-index:5;font-size:0.68em;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;opacity:0.7;">Mode: Drag</div>
+
+        <!-- Stats -->
+        <div id="graphStats" style="position:absolute;bottom:16px;left:20px;z-index:5;display:flex;gap:16px;font-size:0.68em;color:var(--text-secondary);">
+            <span id="statNodes">19 nodes</span>
+            <span id="statLinks">25 links</span>
+            <span id="statDensity">Density: 0.15</span>
+        </div>
+
         <div class="force-graph-legend">
             <span><div class="lg-dot" style="background:#4f46e5;"></div> You</span>
             <span><div class="lg-dot" style="background:#059669;"></div> Platforms</span>
             <span><div class="lg-dot" style="background:#d97706;"></div> Communities</span>
             <span><div class="lg-dot" style="background:#dc2626;"></div> People</span>
-        </span>
         </div>
         <div class="node-tooltip" id="nodeTooltip"></div>
-        <svg id="forceGraph" width="100%" height="500"></svg>
+        <svg id="forceGraph" width="100%" height="560"></svg>
     </div>
 </div>
 
@@ -804,105 +854,250 @@ document.querySelectorAll('.vr-chip').forEach(chip => {
     document.addEventListener('mouseup', () => { isDragging = false; chip.style.zIndex = 2; });
 });
 
-// ── D3 Force-Directed PLN Graph ──
-(function() {
-    const width = document.getElementById('forceGraph').clientWidth || 900;
-    const height = 500;
-    const svg = d3.select('#forceGraph').attr('viewBox', `0 0 ${width} ${height}`);
-    const tooltip = document.getElementById('nodeTooltip');
+// ── D3 Force-Directed PLN Graph (Interactive Builder) ──
+let graphMode = 'drag';
+let connectSource = null;
+let graphZoom = 1;
 
-    const nodes = [
-        { id: 'You', group: 0, r: 28, desc: 'Your PLN hub' },
-        { id: 'GitHub', group: 1, r: 20, desc: 'Code, open-source contributions, technical identity' },
-        { id: 'LinkedIn', group: 1, r: 20, desc: 'Professional networking, industry content, hiring' },
-        { id: 'Twitter/X', group: 1, r: 18, desc: 'Real-time discourse, personality, hot takes' },
-        { id: 'YouTube', group: 1, r: 16, desc: 'Long-form learning, tutorials, video essays' },
-        { id: 'BlueSky', group: 1, r: 14, desc: 'Emerging decentralized social platform' },
-        { id: 'Discord', group: 1, r: 16, desc: 'Community servers, real-time chat, niche groups' },
-        { id: 'Dev Community', group: 2, r: 14, desc: 'Stack Overflow, Dev.to, technical Q&A' },
-        { id: 'EdTech', group: 2, r: 13, desc: 'Educators, researchers, learning designers' },
-        { id: 'Open Source', group: 2, r: 15, desc: 'Contributor networks, maintainer relationships' },
-        { id: 'UVic Network', group: 2, r: 12, desc: 'Classmates, instructors, Mattermost' },
-        { id: 'Design', group: 2, r: 13, desc: 'UI/UX practitioners, design system thinkers' },
-        { id: 'Chris Kennedy', group: 3, r: 10, desc: 'Superintendent, West Vancouver Schools. Canadian EdTech leader.' },
-        { id: 'Jesse Miller', group: 3, r: 10, desc: 'EDCI 338 instructor. Media literacy, digital citizenship.' },
-        { id: 'Dr. Moore', group: 3, r: 10, desc: 'Shelley Moore. Inclusive education, BC educator.' },
-        { id: 'Sophie Lui', group: 3, r: 10, desc: 'Global BC anchor. Public PLN, media discourse.' },
-        { id: 'Alec Couros', group: 3, r: 10, desc: 'PLN researcher, open and social learning.' },
-        { id: 'MediaSmarts', group: 2, r: 12, desc: 'Canadian media literacy organization' },
-        { id: 'Policy/DAIS', group: 2, r: 11, desc: 'AI strategy, privacy research, Canadian policy' },
-    ];
+const gWidth = document.getElementById('forceGraph').clientWidth || 900;
+const gHeight = 560;
+const gSvg = d3.select('#forceGraph').attr('viewBox', `0 0 ${gWidth} ${gHeight}`);
+const gTooltip = document.getElementById('nodeTooltip');
+const gColors = ['#4f46e5', '#059669', '#d97706', '#dc2626'];
+const gGroupNames = ['You', 'Platform', 'Community', 'Person'];
 
-    const links = [
-        { source: 'You', target: 'GitHub', strength: 3 }, { source: 'You', target: 'LinkedIn', strength: 3 },
-        { source: 'You', target: 'Twitter/X', strength: 2 }, { source: 'You', target: 'YouTube', strength: 1 },
-        { source: 'You', target: 'BlueSky', strength: 1 }, { source: 'You', target: 'Discord', strength: 2 },
-        { source: 'You', target: 'UVic Network', strength: 2 },
-        { source: 'GitHub', target: 'Dev Community', strength: 2 }, { source: 'GitHub', target: 'Open Source', strength: 3 },
-        { source: 'LinkedIn', target: 'Design', strength: 1 }, { source: 'LinkedIn', target: 'EdTech', strength: 1 },
-        { source: 'Twitter/X', target: 'Chris Kennedy', strength: 1 }, { source: 'Twitter/X', target: 'Jesse Miller', strength: 1 },
-        { source: 'Twitter/X', target: 'MediaSmarts', strength: 1 },
-        { source: 'UVic Network', target: 'Jesse Miller', strength: 2 }, { source: 'UVic Network', target: 'Dr. Moore', strength: 1 },
-        { source: 'EdTech', target: 'Alec Couros', strength: 1 }, { source: 'EdTech', target: 'Chris Kennedy', strength: 1 },
-        { source: 'YouTube', target: 'Sophie Lui', strength: 1 }, { source: 'YouTube', target: 'Dr. Moore', strength: 1 },
-        { source: 'MediaSmarts', target: 'Policy/DAIS', strength: 2 },
-        { source: 'Open Source', target: 'Dev Community', strength: 2 },
-        { source: 'Design', target: 'Dev Community', strength: 1 },
-        { source: 'Discord', target: 'Dev Community', strength: 1 }, { source: 'Discord', target: 'Open Source', strength: 1 },
-    ];
+const gNodes = [
+    { id: 'You', group: 0, r: 28, desc: 'Your PLN hub. Everything connects here.' },
+    { id: 'GitHub', group: 1, r: 20, desc: 'Code, open-source contributions, technical identity' },
+    { id: 'LinkedIn', group: 1, r: 20, desc: 'Professional networking, industry content, hiring' },
+    { id: 'Twitter/X', group: 1, r: 18, desc: 'Real-time discourse, personality, hot takes' },
+    { id: 'YouTube', group: 1, r: 16, desc: 'Long-form learning, tutorials, video essays' },
+    { id: 'BlueSky', group: 1, r: 14, desc: 'Emerging decentralized social platform' },
+    { id: 'Discord', group: 1, r: 16, desc: 'Community servers, real-time chat, niche groups' },
+    { id: 'Dev Community', group: 2, r: 14, desc: 'Stack Overflow, Dev.to, technical Q&A' },
+    { id: 'EdTech', group: 2, r: 13, desc: 'Educators, researchers, learning designers' },
+    { id: 'Open Source', group: 2, r: 15, desc: 'Contributor networks, maintainer relationships' },
+    { id: 'UVic Network', group: 2, r: 12, desc: 'Classmates, instructors, Mattermost' },
+    { id: 'Design', group: 2, r: 13, desc: 'UI/UX practitioners, design system thinkers' },
+    { id: 'Chris Kennedy', group: 3, r: 10, desc: 'Superintendent, West Vancouver Schools. Canadian EdTech leader.' },
+    { id: 'Jesse Miller', group: 3, r: 10, desc: 'EDCI 338 instructor. Media literacy, digital citizenship.' },
+    { id: 'Dr. Moore', group: 3, r: 10, desc: 'Shelley Moore. Inclusive education, BC educator.' },
+    { id: 'Sophie Lui', group: 3, r: 10, desc: 'Global BC anchor. Public PLN, media discourse.' },
+    { id: 'Alec Couros', group: 3, r: 10, desc: 'PLN researcher, open and social learning.' },
+    { id: 'MediaSmarts', group: 2, r: 12, desc: 'Canadian media literacy organization' },
+    { id: 'Policy/DAIS', group: 2, r: 11, desc: 'AI strategy, privacy research, Canadian policy' },
+];
 
-    const colors = ['#4f46e5', '#059669', '#d97706', '#dc2626'];
+const gLinks = [
+    { source: 'You', target: 'GitHub', strength: 3 }, { source: 'You', target: 'LinkedIn', strength: 3 },
+    { source: 'You', target: 'Twitter/X', strength: 2 }, { source: 'You', target: 'YouTube', strength: 1 },
+    { source: 'You', target: 'BlueSky', strength: 1 }, { source: 'You', target: 'Discord', strength: 2 },
+    { source: 'You', target: 'UVic Network', strength: 2 },
+    { source: 'GitHub', target: 'Dev Community', strength: 2 }, { source: 'GitHub', target: 'Open Source', strength: 3 },
+    { source: 'LinkedIn', target: 'Design', strength: 1 }, { source: 'LinkedIn', target: 'EdTech', strength: 1 },
+    { source: 'Twitter/X', target: 'Chris Kennedy', strength: 1 }, { source: 'Twitter/X', target: 'Jesse Miller', strength: 1 },
+    { source: 'Twitter/X', target: 'MediaSmarts', strength: 1 },
+    { source: 'UVic Network', target: 'Jesse Miller', strength: 2 }, { source: 'UVic Network', target: 'Dr. Moore', strength: 1 },
+    { source: 'EdTech', target: 'Alec Couros', strength: 1 }, { source: 'EdTech', target: 'Chris Kennedy', strength: 1 },
+    { source: 'YouTube', target: 'Sophie Lui', strength: 1 }, { source: 'YouTube', target: 'Dr. Moore', strength: 1 },
+    { source: 'MediaSmarts', target: 'Policy/DAIS', strength: 2 },
+    { source: 'Open Source', target: 'Dev Community', strength: 2 },
+    { source: 'Design', target: 'Dev Community', strength: 1 },
+    { source: 'Discord', target: 'Dev Community', strength: 1 }, { source: 'Discord', target: 'Open Source', strength: 1 },
+];
 
-    const simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(d => 80 + (3 - (d.strength || 1)) * 30))
-        .force('charge', d3.forceManyBody().strength(-200))
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('collision', d3.forceCollide().radius(d => d.r + 8))
-        .force('x', d3.forceX(width / 2).strength(0.05))
-        .force('y', d3.forceY(height / 2).strength(0.05));
+// Store originals for reset
+const origNodes = JSON.parse(JSON.stringify(gNodes));
+const origLinks = gLinks.map(l => ({ source: typeof l.source === 'object' ? l.source.id : l.source, target: typeof l.target === 'object' ? l.target.id : l.target, strength: l.strength }));
 
-    const defs = svg.append('defs');
-    defs.append('filter').attr('id', 'glow')
-        .append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'blur');
+const gDefs = gSvg.append('defs');
+gDefs.append('filter').attr('id', 'glow').append('feGaussianBlur').attr('stdDeviation', '3');
 
-    const link = svg.append('g').selectAll('line').data(links).join('line')
-        .attr('stroke', 'var(--border)').attr('stroke-width', d => d.strength * 0.8).attr('stroke-opacity', 0.5);
+const gContainer = gSvg.append('g').attr('id', 'graphContainer');
+const gLinkGroup = gContainer.append('g');
+const gNodeGroup = gContainer.append('g');
+const connectLine = gContainer.append('line').attr('class', 'connect-line').style('display', 'none');
 
-    const node = svg.append('g').selectAll('g').data(nodes).join('g')
-        .call(d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended));
+const gSim = d3.forceSimulation(gNodes)
+    .force('link', d3.forceLink(gLinks).id(d => d.id).distance(d => 80 + (3 - (d.strength || 1)) * 30))
+    .force('charge', d3.forceManyBody().strength(-220))
+    .force('center', d3.forceCenter(gWidth / 2, gHeight / 2))
+    .force('collision', d3.forceCollide().radius(d => d.r + 10))
+    .force('x', d3.forceX(gWidth / 2).strength(0.04))
+    .force('y', d3.forceY(gHeight / 2).strength(0.04));
 
-    node.append('circle').attr('r', d => d.r).attr('fill', d => colors[d.group])
+function renderGraph() {
+    // Links
+    const linkSel = gLinkGroup.selectAll('line').data(gLinks, d => d.source.id + '-' + d.target.id);
+    linkSel.exit().transition().duration(300).attr('stroke-opacity', 0).remove();
+    const linkEnter = linkSel.enter().append('line')
+        .attr('stroke', 'var(--border)').attr('stroke-width', d => (d.strength || 1) * 0.8).attr('stroke-opacity', 0)
+        .on('click', function(e, d) { if (graphMode === 'delete') { deleteLink(d); } });
+    linkEnter.transition().duration(500).attr('stroke-opacity', 0.5);
+
+    // Nodes
+    const nodeSel = gNodeGroup.selectAll('g.gnode').data(gNodes, d => d.id);
+    nodeSel.exit().transition().duration(300).attr('opacity', 0).remove();
+
+    const nodeEnter = nodeSel.enter().append('g').attr('class', 'gnode').attr('opacity', 0)
+        .call(d3.drag().on('start', gDragStart).on('drag', gDragMove).on('end', gDragEnd));
+
+    nodeEnter.append('circle').attr('r', d => d.r).attr('fill', d => gColors[d.group])
         .attr('stroke', d => d.group === 0 ? 'white' : 'none').attr('stroke-width', d => d.group === 0 ? 3 : 0)
-        .attr('filter', d => d.group === 0 ? 'url(#glow)' : 'none')
-        .style('cursor', 'pointer')
+        .attr('filter', d => d.group === 0 ? 'url(#glow)' : 'none').style('cursor', 'pointer');
+
+    nodeEnter.append('text').text(d => d.id).attr('text-anchor', 'middle').attr('dy', d => d.r + 14)
+        .attr('fill', 'var(--text-secondary)').attr('font-size', d => d.group === 0 ? '11px' : '9px')
+        .attr('font-weight', d => d.group === 0 ? '700' : '500').attr('font-family', 'var(--sans)').style('pointer-events', 'none');
+
+    nodeEnter.transition().duration(500).attr('opacity', 1);
+
+    // Events for all nodes (enter + update)
+    const allNodes = gNodeGroup.selectAll('g.gnode');
+    allNodes.select('circle')
         .on('mouseover', function(e, d) {
-            d3.select(this).transition().duration(200).attr('r', d.r * 1.3);
-            link.attr('stroke-opacity', l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1)
-                .attr('stroke', l => (l.source.id === d.id || l.target.id === d.id) ? colors[d.group] : 'var(--border)');
-            tooltip.style.opacity = 1;
-            tooltip.innerHTML = `<strong>${d.id}</strong><br>${d.desc}`;
-            tooltip.style.left = (e.pageX + 15) + 'px';
-            tooltip.style.top = (e.pageY - 10) + 'px';
+            if (graphMode === 'delete') { d3.select(this).style('stroke', '#dc2626').style('stroke-width', 3); }
+            d3.select(this).transition().duration(150).attr('r', d.r * 1.25);
+            gLinkGroup.selectAll('line')
+                .attr('stroke-opacity', l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.08)
+                .attr('stroke', l => (l.source.id === d.id || l.target.id === d.id) ? gColors[d.group] : 'var(--border)')
+                .attr('stroke-width', l => (l.source.id === d.id || l.target.id === d.id) ? 2.5 : (l.strength || 1) * 0.8);
+            gTooltip.style.opacity = 1;
+            gTooltip.innerHTML = `<strong>${d.id}</strong> <span style="opacity:0.6;font-size:0.85em;">(${gGroupNames[d.group]})</span><br>${d.desc}<br><span style="opacity:0.5;font-size:0.85em;">${gLinks.filter(l => l.source.id === d.id || l.target.id === d.id).length} connections</span>`;
+            gTooltip.style.left = (e.pageX + 15) + 'px';
+            gTooltip.style.top = (e.pageY - 10) + 'px';
         })
+        .on('mousemove', function(e) { gTooltip.style.left = (e.pageX + 15) + 'px'; gTooltip.style.top = (e.pageY - 10) + 'px'; })
         .on('mouseout', function(e, d) {
-            d3.select(this).transition().duration(200).attr('r', d.r);
-            link.attr('stroke-opacity', 0.5).attr('stroke', 'var(--border)');
-            tooltip.style.opacity = 0;
+            d3.select(this).style('stroke', d.group === 0 ? 'white' : 'none').style('stroke-width', d.group === 0 ? 3 : 0);
+            d3.select(this).transition().duration(150).attr('r', d.r);
+            gLinkGroup.selectAll('line').attr('stroke-opacity', 0.5).attr('stroke', 'var(--border)').attr('stroke-width', d => (d.strength || 1) * 0.8);
+            gTooltip.style.opacity = 0;
+        })
+        .on('click', function(e, d) {
+            if (graphMode === 'connect') { handleConnect(d); }
+            else if (graphMode === 'delete') { deleteNode(d); }
         });
 
-    node.append('text').text(d => d.id).attr('text-anchor', 'middle').attr('dy', d => d.r + 14)
-        .attr('fill', 'var(--text-secondary)').attr('font-size', d => d.group === 0 ? '11px' : '9px')
-        .attr('font-weight', d => d.group === 0 ? '700' : '500').attr('font-family', 'var(--sans)');
+    gSim.nodes(gNodes);
+    gSim.force('link').links(gLinks);
+    gSim.alpha(0.5).restart();
+    updateStats();
+}
 
-    simulation.on('tick', () => {
-        link.attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y);
-        node.attr('transform', d => `translate(${d.x},${d.y})`);
-    });
+function gDragStart(e, d) {
+    if (graphMode !== 'drag') return;
+    if (!e.active) gSim.alphaTarget(0.3).restart();
+    d.fx = d.x; d.fy = d.y;
+}
+function gDragMove(e, d) {
+    if (graphMode !== 'drag') return;
+    d.fx = e.x; d.fy = e.y;
+}
+function gDragEnd(e, d) {
+    if (graphMode !== 'drag') return;
+    if (!e.active) gSim.alphaTarget(0);
+    d.fx = null; d.fy = null;
+}
 
-    function dragstarted(e, d) { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
-    function dragged(e, d) { d.fx = e.x; d.fy = e.y; }
-    function dragended(e, d) { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
-})();
+gSim.on('tick', () => {
+    gLinkGroup.selectAll('line').attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    gNodeGroup.selectAll('g.gnode').attr('transform', d => `translate(${d.x},${d.y})`);
+});
+
+renderGraph();
+
+// Mode switching
+function setMode(mode) {
+    graphMode = mode;
+    connectSource = null;
+    connectLine.style('display', 'none');
+    document.querySelectorAll('.g-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn' + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add('active');
+    document.getElementById('modeIndicator').textContent = 'Mode: ' + mode.charAt(0).toUpperCase() + mode.slice(1);
+    gSvg.style('cursor', mode === 'connect' ? 'crosshair' : mode === 'delete' ? 'not-allowed' : 'default');
+}
+
+// Connect mode
+function handleConnect(d) {
+    if (!connectSource) {
+        connectSource = d;
+        d3.select(gNodeGroup.selectAll('g.gnode').nodes().find(n => d3.select(n).datum().id === d.id)).select('circle')
+            .attr('stroke', gColors[d.group]).attr('stroke-width', 3);
+        gSvg.on('mousemove.connect', function(e) {
+            const [mx, my] = d3.pointer(e, gContainer.node());
+            connectLine.style('display', 'block').attr('x1', connectSource.x).attr('y1', connectSource.y).attr('x2', mx).attr('y2', my);
+        });
+    } else {
+        if (connectSource.id !== d.id && !gLinks.find(l => (l.source.id === connectSource.id && l.target.id === d.id) || (l.source.id === d.id && l.target.id === connectSource.id))) {
+            gLinks.push({ source: connectSource, target: d, strength: 2 });
+            renderGraph();
+        }
+        connectSource = null;
+        connectLine.style('display', 'none');
+        gSvg.on('mousemove.connect', null);
+    }
+}
+
+// Add node
+function addNodeFromInput() {
+    const name = document.getElementById('nodeNameInput').value.trim();
+    if (!name || gNodes.find(n => n.id === name)) return;
+    const group = parseInt(document.getElementById('nodeTypeSelect').value);
+    const sizes = { 1: 16, 2: 13, 3: 10 };
+    gNodes.push({ id: name, group, r: sizes[group] || 13, desc: 'User-added ' + gGroupNames[group].toLowerCase(), x: gWidth / 2 + (Math.random() - 0.5) * 100, y: gHeight / 2 + (Math.random() - 0.5) * 100 });
+    // Auto-connect to "You"
+    gLinks.push({ source: gNodes[0], target: gNodes[gNodes.length - 1], strength: 1 });
+    renderGraph();
+    document.getElementById('nodeNameInput').value = '';
+}
+
+// Delete
+function deleteNode(d) {
+    if (d.id === 'You') return; // Cannot delete hub
+    const idx = gNodes.indexOf(d);
+    if (idx > -1) gNodes.splice(idx, 1);
+    for (let i = gLinks.length - 1; i >= 0; i--) {
+        if (gLinks[i].source.id === d.id || gLinks[i].target.id === d.id) gLinks.splice(i, 1);
+    }
+    renderGraph();
+}
+
+function deleteLink(l) {
+    const idx = gLinks.indexOf(l);
+    if (idx > -1) gLinks.splice(idx, 1);
+    renderGraph();
+}
+
+// Zoom
+function zoomGraph(factor) {
+    graphZoom *= factor;
+    gContainer.transition().duration(300).attr('transform', `translate(${gWidth/2*(1-graphZoom)},${gHeight/2*(1-graphZoom)}) scale(${graphZoom})`);
+}
+
+// Reset
+function resetGraph() {
+    graphZoom = 1;
+    gContainer.transition().duration(300).attr('transform', '');
+    gNodes.length = 0;
+    gLinks.length = 0;
+    origNodes.forEach(n => gNodes.push({ ...n, x: gWidth / 2 + (Math.random() - 0.5) * 50, y: gHeight / 2 + (Math.random() - 0.5) * 50 }));
+    origLinks.forEach(l => gLinks.push({ source: l.source, target: l.target, strength: l.strength }));
+    renderGraph();
+    setMode('drag');
+}
+
+// Stats
+function updateStats() {
+    const n = gNodes.length, l = gLinks.length;
+    const maxLinks = n * (n - 1) / 2;
+    document.getElementById('statNodes').textContent = n + ' nodes';
+    document.getElementById('statLinks').textContent = l + ' links';
+    document.getElementById('statDensity').textContent = 'Density: ' + (maxLinks > 0 ? (l / maxLinks).toFixed(2) : '0');
+}
+
+// Enter key to add node
+document.getElementById('nodeNameInput').addEventListener('keydown', e => { if (e.key === 'Enter') addNodeFromInput(); });
 
 // ── Animated Counters (GSAP ScrollTrigger) ──
 gsap.registerPlugin(ScrollTrigger);
