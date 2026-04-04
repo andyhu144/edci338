@@ -729,6 +729,61 @@
 <!-- REFERENCES -->
 <!-- ══════════════════════════════════════════════ -->
 <div class="section" id="references">
+    <!-- Technical Implementation -->
+    <div class="island" data-aos="fade-up" style="margin-bottom:32px;">
+        <div style="font-size:0.72em;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;">Technical Stack &amp; Implementation</div>
+        <p style="font-size:0.93em;color:var(--text-secondary);line-height:1.8;margin-bottom:20px;">This project was built as a single-page application using modern web technologies and open-source libraries. Every interactive element, animation, and data visualization runs client-side in the browser with no server backend required. The entire application is contained in a single HTML file deployed via GitHub Pages.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <div style="font-size:0.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px;">Data Visualization</div>
+                <div style="font-size:0.85em;font-weight:600;color:var(--text);margin-bottom:4px;">D3.js v7</div>
+                <div style="font-size:0.78em;color:var(--text-secondary);line-height:1.5;">Force-directed graph simulation with Verlet integration physics engine. Implements Barnes-Hut approximation for n-body charge forces, collision detection via quadtree spatial indexing, and configurable link distance springs. Supports real-time node/link CRUD operations with dynamic simulation reheating.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <div style="font-size:0.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px;">Charts</div>
+                <div style="font-size:0.85em;font-weight:600;color:var(--text);margin-bottom:4px;">Chart.js v4</div>
+                <div style="font-size:0.78em;color:var(--text-secondary);line-height:1.5;">Canvas-based radar chart with responsive resizing, animated dataset transitions, and configurable polar coordinate scales. Platform comparison data is dynamically swapped on user interaction with smooth interpolation between states.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <div style="font-size:0.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px;">Animation Engine</div>
+                <div style="font-size:0.85em;font-weight:600;color:var(--text);margin-bottom:4px;">GSAP 3.12 + ScrollTrigger</div>
+                <div style="font-size:0.78em;color:var(--text-secondary);line-height:1.5;">High-performance animation runtime using requestAnimationFrame scheduling. ScrollTrigger plugin monitors viewport intersection for scroll-activated counter animations with configurable easing curves and snap-to-integer rounding.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <div style="font-size:0.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px;">Scroll Animations</div>
+                <div style="font-size:0.85em;font-weight:600;color:var(--text);margin-bottom:4px;">AOS (Animate on Scroll)</div>
+                <div style="font-size:0.78em;color:var(--text-secondary);line-height:1.5;">Intersection Observer-based library triggering CSS animations as elements enter the viewport. Configured with customizable offsets, durations, and per-element delay cascading for staggered reveal sequences across card grids.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <div style="font-size:0.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px;">Styling</div>
+                <div style="font-size:0.85em;font-weight:600;color:var(--text);margin-bottom:4px;">Custom CSS with Design Tokens</div>
+                <div style="font-size:0.78em;color:var(--text-secondary);line-height:1.5;">CSS custom properties (design tokens) for theming with automatic dark mode via prefers-color-scheme media query. Responsive grid layouts using CSS Grid and Flexbox. Cubic-bezier transitions, gradient animations with background-size keyframes, and backdrop-filter blur effects.</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;">
+                <div style="font-size:0.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px;">Deployment</div>
+                <div style="font-size:0.85em;font-weight:600;color:var(--text);margin-bottom:4px;">GitHub Pages (Static CDN)</div>
+                <div style="font-size:0.78em;color:var(--text-secondary);line-height:1.5;">Zero-config static deployment via Git push. All dependencies loaded from CDN (jsDelivr, unpkg) for optimal caching and global edge distribution. No build pipeline, no server runtime, no database. Single HTML file architecture for maximum portability.</div>
+            </div>
+        </div>
+
+        <div style="font-size:0.72em;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:14px;">Interactive Features Summary</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Force-directed network graph with physics simulation</span><span style="color:var(--accent);font-weight:600;">D3.js</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Node creation, deletion, and connection builder</span><span style="color:var(--accent);font-weight:600;">D3.js + SVG</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Platform comparison radar chart with transitions</span><span style="color:var(--accent);font-weight:600;">Chart.js</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Scroll-triggered animated counters</span><span style="color:var(--accent);font-weight:600;">GSAP</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Draggable V&amp;R framework mapping interface</span><span style="color:var(--accent);font-weight:600;">Vanilla JS</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Multi-question quiz engine with scoring and redo</span><span style="color:var(--accent);font-weight:600;">Vanilla JS</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Tabbed content panels with animated transitions</span><span style="color:var(--accent);font-weight:600;">CSS + JS</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Hover-expand checklists with course references</span><span style="color:var(--accent);font-weight:600;">CSS</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Real-time network density calculation</span><span style="color:var(--accent);font-weight:600;">D3.js</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Floating navigation with scroll-spy active states</span><span style="color:var(--accent);font-weight:600;">Vanilla JS</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Reading progress indicator</span><span style="color:var(--accent);font-weight:600;">Vanilla JS</span></div>
+            <div style="font-size:0.82em;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>Automatic dark/light theme switching</span><span style="color:var(--accent);font-weight:600;">CSS</span></div>
+        </div>
+    </div>
+
     <div class="ref-list" data-aos="fade-up">
         <h3>References</h3>
         <p>boyd, d. (2012). Networked privacy. <em>Surveillance &amp; Society, 10</em>(3/4), 348-350.</p>
