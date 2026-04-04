@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <style>
         :root {
             --bg: #f8f9fa; --surface: #ffffff; --border: #e5e7eb; --text: #111827; --text-secondary: #6b7280;
@@ -166,6 +169,42 @@
         .metric-val { font-size: 2em; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
         .metric-label { font-size: 0.78em; color: var(--text-secondary); font-weight: 500; }
 
+        /* ── Force Graph ── */
+        .force-graph-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; position: relative; }
+        .force-graph-wrap svg { width: 100%; display: block; }
+        .force-graph-title { position: absolute; top: 16px; left: 20px; font-size: 0.68em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); z-index: 2; }
+        .force-graph-legend { position: absolute; bottom: 16px; right: 20px; display: flex; gap: 16px; font-size: 0.7em; color: var(--text-secondary); z-index: 2; }
+        .force-graph-legend span { display: flex; align-items: center; gap: 5px; }
+        .force-graph-legend .lg-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .node-tooltip { position: absolute; background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 0.78em; font-weight: 500; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 10; white-space: nowrap; }
+
+        /* ── Hover Checklist ── */
+        .hover-check-item { border-bottom: 1px solid var(--border); overflow: hidden; transition: all 0.3s ease; }
+        .hover-check-item:last-child { border-bottom: none; }
+        .hover-check-top { display: flex; align-items: center; gap: 12px; padding: 12px 0; font-size: 0.88em; color: var(--text-secondary); cursor: pointer; }
+        .hover-check-expand { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s; padding: 0 0 0 32px; }
+        .hover-check-item:hover .hover-check-expand, .hover-check-item.expanded .hover-check-expand { max-height: 120px; padding: 0 0 12px 32px; }
+        .hover-check-expand p { font-size: 0.8em; color: var(--accent); line-height: 1.5; margin: 0; }
+        .hover-check-expand .hc-ref { font-size: 0.72em; color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+        /* ── Animated Counter ── */
+        .counter-val { font-size: 2.5em; font-weight: 800; color: var(--accent); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+
+        /* ── Before/After Slider ── */
+        .ba-slider { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm); }
+        .ba-slider-title { font-size: 0.68em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 20px; text-align: center; }
+        .ba-container { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: start; }
+        .ba-side { padding: 20px; border-radius: var(--radius-sm); min-height: 200px; }
+        .ba-side.before { background: var(--red-soft); border: 1px solid rgba(220,38,38,0.2); }
+        .ba-side.after { background: var(--green-soft); border: 1px solid rgba(5,150,105,0.2); }
+        .ba-label { font-size: 0.68em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        .ba-side.before .ba-label { color: var(--red); }
+        .ba-side.after .ba-label { color: var(--green); }
+        .ba-side p { font-size: 0.82em; line-height: 1.6; margin-bottom: 8px; }
+        .ba-side.before p { color: #991b1b; }
+        .ba-side.after p { color: #065f46; }
+        .ba-arrow { display: flex; align-items: center; color: var(--text-secondary); opacity: 0.3; font-size: 1.5em; padding-top: 60px; }
+
         /* ── References ── */
         .ref-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-sm); }
         .ref-list h3 { font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 16px; }
@@ -251,6 +290,20 @@
             <p>A PLN differs from a social network in purpose. A social network connects you to people you know. A PLN connects you to people you learn from. The overlap exists, but the intention is different. Every person you follow, every community you join, and every platform you use is a design decision about what your learning environment looks like.</p>
             <p>Throughout this guide, we will explore how to build a PLN that is diverse, media-literate, privacy-conscious, and professionally effective, drawing on the frameworks and research covered in EDCI 338.</p>
         </div>
+    </div>
+
+    <!-- Force-Directed PLN Network Graph -->
+    <div class="force-graph-wrap" style="margin-top:32px;" data-aos="fade-up">
+        <div class="force-graph-title">Your PLN as a Living Network</div>
+        <div class="force-graph-legend">
+            <span><div class="lg-dot" style="background:#4f46e5;"></div> You</span>
+            <span><div class="lg-dot" style="background:#059669;"></div> Platforms</span>
+            <span><div class="lg-dot" style="background:#d97706;"></div> Communities</span>
+            <span><div class="lg-dot" style="background:#dc2626;"></div> People</span>
+        </span>
+        </div>
+        <div class="node-tooltip" id="nodeTooltip"></div>
+        <svg id="forceGraph" width="100%" height="500"></svg>
     </div>
 </div>
 
@@ -410,12 +463,30 @@
         </div>
         <div class="checklist" id="diversityChecklist">
             <div class="checklist-title">PLN Diversity Audit</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I follow people from industries outside my own</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> My network includes voices from different geographic regions</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I engage with content that challenges my assumptions</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I follow educators, researchers, and policy makers</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> My feed includes both agreement and productive disagreement</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I have sought out Canadian sources and perspectives</div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I follow people from industries outside my own</div>
+                <div class="hover-check-expand"><p>Try following 3 people this week from healthcare, education, or public policy. Notice how their problems mirror yours in unexpected ways.</p><div class="hc-ref">Moore (2021): communities of diversity create productive discomfort</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> My network includes voices from different geographic regions</div>
+                <div class="hover-check-expand"><p>Follow practitioners in at least 3 countries. International perspectives reveal assumptions you did not know you were making.</p><div class="hc-ref">Couros (2010): PLNs for open and social learning across boundaries</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I engage with content that challenges my assumptions</div>
+                <div class="hover-check-expand"><p>Sit with the discomfort. If something in your feed makes you react, that is a signal to engage, not to scroll past.</p><div class="hc-ref">Miller (2026): "Are you willing to sit in the uncomfortableness?"</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I follow educators, researchers, and policy makers</div>
+                <div class="hover-check-expand"><p>These voices provide the "why" behind the "what." Chris Kennedy (West Vancouver Schools) is a strong Canadian example of transparent educational leadership through PLN.</p><div class="hc-ref">Estaiteyeh &amp; Mindzak (2025): bridging practice and research</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> My feed includes both agreement and productive disagreement</div>
+                <div class="hover-check-expand"><p>If everyone in your network agrees with you, your PLN is an echo chamber, not a learning network. Seek out constructive friction.</p><div class="hc-ref">Obama (2022): "We lose our capacity to distinguish between fact, opinion, and fiction"</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I have sought out Canadian sources and perspectives</div>
+                <div class="hover-check-expand"><p>Canadian policy, media, and education contexts differ significantly from US defaults. MediaSmarts, DAIS, and provincial educator networks are good starting points.</p><div class="hc-ref">EDCI 338 Weeks 9-11: Canadian context in digital citizenship</div></div>
+            </div>
         </div>
     </div>
 </div>
@@ -436,6 +507,30 @@
     <div class="island" data-aos="fade-up" style="margin-bottom:24px;">
         <p>Hirst (2019) argues that fake news is not primarily an information problem. It is a business model. Content designed to provoke outrage generates clicks, which generates revenue. Understanding that supply chain is more useful than fact-checking individual articles. The real question is not "is this true?" but "why does this exist, and who profits from me sharing it?"</p>
         <p>Sophie Lui, a Global BC news anchor, described social media as a place that "can eat away at my soul" when she follows accounts out of obligation rather than value. A media-literate PLN is one where you follow sources because they make you think, not because the algorithm put them in front of you.</p>
+    </div>
+
+    <!-- Before/After: Information Evaluation -->
+    <div class="ba-slider" data-aos="fade-up" style="margin-bottom:24px;">
+        <div class="ba-slider-title">How Media Literacy Changes Your Response</div>
+        <div class="ba-container">
+            <div class="ba-side before">
+                <div class="ba-label">Without Media Literacy</div>
+                <p>See a shocking headline about a Canadian politician.</p>
+                <p>Feel outraged. Share immediately.</p>
+                <p>Read the comments. Get angrier.</p>
+                <p>Move on. Never check if it was true.</p>
+                <p>The misinformation has now reached your entire network.</p>
+            </div>
+            <div class="ba-arrow">&rarr;</div>
+            <div class="ba-side after">
+                <div class="ba-label">With Media Literacy</div>
+                <p>See a shocking headline. Pause. Notice the emotional trigger.</p>
+                <p>Check: who published this? When was the domain registered?</p>
+                <p>Lateral read: what do other sources say about this claim?</p>
+                <p>Check the subject's official channels for confirmation or denial.</p>
+                <p>If unverified, do not share. The chain of misinformation stops with you.</p>
+            </div>
+        </div>
     </div>
 
     <!-- Media Literacy Quiz -->
@@ -516,16 +611,16 @@
 
     <div class="cols-3" data-aos="fade-up">
         <div class="metric-card">
-            <div class="metric-val">77%</div>
-            <div class="metric-label">of Canadian students used ChatGPT (Janzen et al., 2024)</div>
+            <div class="counter-val" data-target="77">0</div>
+            <div class="metric-label">% of Canadian students used ChatGPT (Janzen et al., 2024)</div>
         </div>
         <div class="metric-card">
-            <div class="metric-val">72%</div>
-            <div class="metric-label">used it specifically for coursework</div>
+            <div class="counter-val" data-target="72">0</div>
+            <div class="metric-label">% used it specifically for coursework</div>
         </div>
         <div class="metric-card">
-            <div class="metric-val">27%</div>
-            <div class="metric-label">of Ontario educators have never used AI tools</div>
+            <div class="counter-val" data-target="27">0</div>
+            <div class="metric-label">% of Ontario educators have never used AI tools</div>
         </div>
     </div>
 </div>
@@ -550,12 +645,30 @@
         </div>
         <div class="checklist">
             <div class="checklist-title">PLN Health Check</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I learned something new from my network this week</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I contributed something useful to my network this week</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> Someone in my network made me reconsider an assumption</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I can name three people I follow for perspectives different from mine</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> My platform choices are deliberate, not habitual</div>
-            <div class="check-item"><div class="check-box" onclick="this.classList.toggle('checked')"></div> I can explain why I use each platform in my PLN</div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I learned something new from my network this week</div>
+                <div class="hover-check-expand"><p>If the answer is no, your PLN has stagnated. Add a new source in a field you know nothing about.</p><div class="hc-ref">Qualman (2012): digital leadership creates value through learning</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I contributed something useful to my network this week</div>
+                <div class="hover-check-expand"><p>Sharing is the learning. Write a post, reply to a thread, or share a resource with commentary. Consumption without contribution is passive.</p><div class="hc-ref">Hermida (2014): we share to process our own thinking</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> Someone in my network made me reconsider an assumption</div>
+                <div class="hover-check-expand"><p>This is the highest signal of a healthy PLN. If nobody is challenging your thinking, you are in an echo chamber.</p><div class="hc-ref">Clark &amp; Aufderheide (2009): "open, dynamic, and participatory"</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I can name three people I follow for different perspectives</div>
+                <div class="hover-check-expand"><p>Not just different topics. Different worldviews. If you cannot name them, your diversity is incidental, not intentional.</p><div class="hc-ref">Moore (2021): balance identity communities with diversity communities</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> My platform choices are deliberate, not habitual</div>
+                <div class="hover-check-expand"><p>Map your V&R profile. If you cannot explain why you use a platform, you are using it out of habit, not strategy.</p><div class="hc-ref">White &amp; Le Cornu (2017): Visitor vs Resident modes of engagement</div></div>
+            </div>
+            <div class="hover-check-item">
+                <div class="hover-check-top"><div class="check-box" onclick="event.stopPropagation();this.classList.toggle('checked')"></div> I can explain why I use each platform in my PLN</div>
+                <div class="hover-check-expand"><p>Every platform serves a function. LinkedIn for professional reach. GitHub for code reputation. Twitter for real-time discourse. If a platform has no function, cut it.</p><div class="hc-ref">Stoller (2016): digital identity is a design decision</div></div>
+            </div>
         </div>
     </div>
 </div>
@@ -691,6 +804,126 @@ document.querySelectorAll('.vr-chip').forEach(chip => {
     document.addEventListener('mouseup', () => { isDragging = false; chip.style.zIndex = 2; });
 });
 
+// ── D3 Force-Directed PLN Graph ──
+(function() {
+    const width = document.getElementById('forceGraph').clientWidth || 900;
+    const height = 500;
+    const svg = d3.select('#forceGraph').attr('viewBox', `0 0 ${width} ${height}`);
+    const tooltip = document.getElementById('nodeTooltip');
+
+    const nodes = [
+        { id: 'You', group: 0, r: 28, desc: 'Your PLN hub' },
+        { id: 'GitHub', group: 1, r: 20, desc: 'Code, open-source contributions, technical identity' },
+        { id: 'LinkedIn', group: 1, r: 20, desc: 'Professional networking, industry content, hiring' },
+        { id: 'Twitter/X', group: 1, r: 18, desc: 'Real-time discourse, personality, hot takes' },
+        { id: 'YouTube', group: 1, r: 16, desc: 'Long-form learning, tutorials, video essays' },
+        { id: 'BlueSky', group: 1, r: 14, desc: 'Emerging decentralized social platform' },
+        { id: 'Discord', group: 1, r: 16, desc: 'Community servers, real-time chat, niche groups' },
+        { id: 'Dev Community', group: 2, r: 14, desc: 'Stack Overflow, Dev.to, technical Q&A' },
+        { id: 'EdTech', group: 2, r: 13, desc: 'Educators, researchers, learning designers' },
+        { id: 'Open Source', group: 2, r: 15, desc: 'Contributor networks, maintainer relationships' },
+        { id: 'UVic Network', group: 2, r: 12, desc: 'Classmates, instructors, Mattermost' },
+        { id: 'Design', group: 2, r: 13, desc: 'UI/UX practitioners, design system thinkers' },
+        { id: 'Chris Kennedy', group: 3, r: 10, desc: 'Superintendent, West Vancouver Schools. Canadian EdTech leader.' },
+        { id: 'Jesse Miller', group: 3, r: 10, desc: 'EDCI 338 instructor. Media literacy, digital citizenship.' },
+        { id: 'Dr. Moore', group: 3, r: 10, desc: 'Shelley Moore. Inclusive education, BC educator.' },
+        { id: 'Sophie Lui', group: 3, r: 10, desc: 'Global BC anchor. Public PLN, media discourse.' },
+        { id: 'Alec Couros', group: 3, r: 10, desc: 'PLN researcher, open and social learning.' },
+        { id: 'MediaSmarts', group: 2, r: 12, desc: 'Canadian media literacy organization' },
+        { id: 'Policy/DAIS', group: 2, r: 11, desc: 'AI strategy, privacy research, Canadian policy' },
+    ];
+
+    const links = [
+        { source: 'You', target: 'GitHub', strength: 3 }, { source: 'You', target: 'LinkedIn', strength: 3 },
+        { source: 'You', target: 'Twitter/X', strength: 2 }, { source: 'You', target: 'YouTube', strength: 1 },
+        { source: 'You', target: 'BlueSky', strength: 1 }, { source: 'You', target: 'Discord', strength: 2 },
+        { source: 'You', target: 'UVic Network', strength: 2 },
+        { source: 'GitHub', target: 'Dev Community', strength: 2 }, { source: 'GitHub', target: 'Open Source', strength: 3 },
+        { source: 'LinkedIn', target: 'Design', strength: 1 }, { source: 'LinkedIn', target: 'EdTech', strength: 1 },
+        { source: 'Twitter/X', target: 'Chris Kennedy', strength: 1 }, { source: 'Twitter/X', target: 'Jesse Miller', strength: 1 },
+        { source: 'Twitter/X', target: 'MediaSmarts', strength: 1 },
+        { source: 'UVic Network', target: 'Jesse Miller', strength: 2 }, { source: 'UVic Network', target: 'Dr. Moore', strength: 1 },
+        { source: 'EdTech', target: 'Alec Couros', strength: 1 }, { source: 'EdTech', target: 'Chris Kennedy', strength: 1 },
+        { source: 'YouTube', target: 'Sophie Lui', strength: 1 }, { source: 'YouTube', target: 'Dr. Moore', strength: 1 },
+        { source: 'MediaSmarts', target: 'Policy/DAIS', strength: 2 },
+        { source: 'Open Source', target: 'Dev Community', strength: 2 },
+        { source: 'Design', target: 'Dev Community', strength: 1 },
+        { source: 'Discord', target: 'Dev Community', strength: 1 }, { source: 'Discord', target: 'Open Source', strength: 1 },
+    ];
+
+    const colors = ['#4f46e5', '#059669', '#d97706', '#dc2626'];
+
+    const simulation = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(links).id(d => d.id).distance(d => 80 + (3 - (d.strength || 1)) * 30))
+        .force('charge', d3.forceManyBody().strength(-200))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collision', d3.forceCollide().radius(d => d.r + 8))
+        .force('x', d3.forceX(width / 2).strength(0.05))
+        .force('y', d3.forceY(height / 2).strength(0.05));
+
+    const defs = svg.append('defs');
+    defs.append('filter').attr('id', 'glow')
+        .append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'blur');
+
+    const link = svg.append('g').selectAll('line').data(links).join('line')
+        .attr('stroke', 'var(--border)').attr('stroke-width', d => d.strength * 0.8).attr('stroke-opacity', 0.5);
+
+    const node = svg.append('g').selectAll('g').data(nodes).join('g')
+        .call(d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended));
+
+    node.append('circle').attr('r', d => d.r).attr('fill', d => colors[d.group])
+        .attr('stroke', d => d.group === 0 ? 'white' : 'none').attr('stroke-width', d => d.group === 0 ? 3 : 0)
+        .attr('filter', d => d.group === 0 ? 'url(#glow)' : 'none')
+        .style('cursor', 'pointer')
+        .on('mouseover', function(e, d) {
+            d3.select(this).transition().duration(200).attr('r', d.r * 1.3);
+            link.attr('stroke-opacity', l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1)
+                .attr('stroke', l => (l.source.id === d.id || l.target.id === d.id) ? colors[d.group] : 'var(--border)');
+            tooltip.style.opacity = 1;
+            tooltip.innerHTML = `<strong>${d.id}</strong><br>${d.desc}`;
+            tooltip.style.left = (e.pageX + 15) + 'px';
+            tooltip.style.top = (e.pageY - 10) + 'px';
+        })
+        .on('mouseout', function(e, d) {
+            d3.select(this).transition().duration(200).attr('r', d.r);
+            link.attr('stroke-opacity', 0.5).attr('stroke', 'var(--border)');
+            tooltip.style.opacity = 0;
+        });
+
+    node.append('text').text(d => d.id).attr('text-anchor', 'middle').attr('dy', d => d.r + 14)
+        .attr('fill', 'var(--text-secondary)').attr('font-size', d => d.group === 0 ? '11px' : '9px')
+        .attr('font-weight', d => d.group === 0 ? '700' : '500').attr('font-family', 'var(--sans)');
+
+    simulation.on('tick', () => {
+        link.attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+        node.attr('transform', d => `translate(${d.x},${d.y})`);
+    });
+
+    function dragstarted(e, d) { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+    function dragged(e, d) { d.fx = e.x; d.fy = e.y; }
+    function dragended(e, d) { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+})();
+
+// ── Animated Counters (GSAP ScrollTrigger) ──
+gsap.registerPlugin(ScrollTrigger);
+document.querySelectorAll('.counter-val').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    ScrollTrigger.create({
+        trigger: el,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+            gsap.to(el, {
+                duration: 2,
+                innerText: target,
+                snap: { innerText: 1 },
+                ease: 'power2.out',
+                onUpdate: function() { el.textContent = Math.round(gsap.getProperty(el, 'innerText')); }
+            });
+        }
+    });
+});
+
 // ── Media Literacy Quiz ──
 const quizData = [
     {
@@ -728,7 +961,7 @@ function renderQuiz() {
     prog.innerHTML = quizData.map((_, i) => `<div class="quiz-dot ${i < currentQ ? 'done' : i === currentQ ? 'current' : ''}"></div>`).join('');
 
     if (currentQ >= quizData.length) {
-        document.getElementById('quizContainer').innerHTML = `<div style="text-align:center;padding:20px;"><div style="font-size:1.5em;font-weight:700;color:var(--green);margin-bottom:8px;">Quiz Complete</div><p style="color:var(--text-secondary);font-size:0.9em;">You have completed the media literacy assessment. Remember: the goal is not to be right every time, but to develop the habit of questioning before sharing.</p></div>`;
+        document.getElementById('quizContainer').innerHTML = `<div style="text-align:center;padding:20px;"><div style="font-size:1.5em;font-weight:700;color:var(--green);margin-bottom:8px;">Quiz Complete</div><p style="color:var(--text-secondary);font-size:0.9em;margin-bottom:16px;">You have completed the media literacy assessment. Remember: the goal is not to be right every time, but to develop the habit of questioning before sharing.</p><button onclick="currentQ=0;renderQuiz();" style="padding:10px 24px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:0.85em;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all 0.2s;">Redo Quiz</button></div>`;
         return;
     }
 
